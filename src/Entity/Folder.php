@@ -46,8 +46,20 @@ class Folder
      */
     private $images;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Folder", mappedBy="parent")
+     */
+    private $children;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Folder", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     */
+    private $parent;
+
     public function __construct()
     {
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->images = new ArrayCollection();
     }
 
@@ -133,6 +145,48 @@ class Folder
     public function removeImage($img)
     {
         $this->images->removeElement($img);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param mixed $children
+     */
+    public function setChildren($children): void
+    {
+        $this->children = $children;
+    }
+
+    public function addChildren($img)
+    {
+        $this->children->add($img);
+    }
+
+    public function removeChildren($img)
+    {
+        $this->children->removeElement($img);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param mixed $parent
+     */
+    public function setParent($parent): void
+    {
+        $this->parent = $parent;
     }
 
 }
