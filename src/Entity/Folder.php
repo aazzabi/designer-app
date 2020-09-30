@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Repository\FolderRepository;
 
 /**
  * @ORM\Entity(repositoryClass=FolderRepository::class)
@@ -42,7 +43,7 @@ class Folder
     private $client;
 
     /**
-     * @ORM\OneToMany(targetEntity="Image", mappedBy="folder")
+     * @ORM\OneToMany(targetEntity="Image", mappedBy="folder", orphanRemoval=true, )
      */
     private $images;
 
@@ -61,6 +62,7 @@ class Folder
     {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
 
 
@@ -137,9 +139,13 @@ class Folder
         $this->images = $images;
     }
 
-    public function addImage($img)
+    public function addImage(Image $img)
     {
-        $this->images->add($img);
+        if (!$this->images->contains($img)) {
+            $this->images->add($img);
+            $img->setFolder($this);
+        }
+        return $this;
     }
 
     public function removeImage($img)

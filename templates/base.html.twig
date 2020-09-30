@@ -3,10 +3,16 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
         {% block body %}{% endblock %}
+        <script src="{{ asset('/javascripts/jquery-3.3.1.js') }}"></script>
+        <script src="{{ asset('/javascripts/jquery.min.js') }}"></script>
+        <script src="{{ asset('/javascripts/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('/javascripts/datatables.js') }}"></script>
+        <script src="{{ asset('/javascripts/datatables.bootstrap.min.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

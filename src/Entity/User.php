@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Repository\UserRepository;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -166,6 +167,11 @@ class User implements UserInterface
     public function removeFolder($folder)
     {
         $this->folders->removeElement($folder);
+    }
+
+    public function __toString()
+    {
+        return $this->getUsername();
     }
 
 

@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello FolderController!{% endblock %}
+{% block stylesheets %}
+    <style>
+        .imagesPreview {
+            height: 150px;
+            padding: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form , {'attr': {'id': 'form-example-2'}}) }}
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+    {{ form_row(form._token) }}
+    {{ form_widget(form) }}
+    <div class="gallery"></div>
+
+    <a class="btn btn-danger btn-sm clearFiles">Clear files</a>
+    <button class="btn btn-info btn-sm">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {#<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>#}
+    <script src="/javascripts/jquery-3.4.1.min.js"></script>
+    <script src="/javascripts/jquery.md5.js"></script>
+    <script>
+        function readURL(input, placeToInsertImagePreview) {
+            if (input.files) {
+                var filesAmount = input.files.length;
+                for (i = 0; i < filesAmount; i++) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (event) {
+                        $($.parseHTML('<img>'))
+                            .attr('src', event.target.result)
+                            .attr('class', 'imagesPreview')
+                            .appendTo(placeToInsertImagePreview);
+                    };
+
+                    reader.readAsDataURL(input.files[i]);
+                }
+            }
+        }
+
+        $("#folder_images").change(function () {
+            $("div.gallery").replaceWith('<div class="gallery"></div>');
+            readURL(this, 'div.gallery');
+        });
+
+    </script>
+
+    <script>
+
+        $('.clearFiles').click(function (evt) {
+            $("div.gallery").replaceWith('<div class="gallery"></div>');
+        })
+    </script>
+{% endblock %}
