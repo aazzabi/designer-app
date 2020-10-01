@@ -28,7 +28,23 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $username;
+
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=false)
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=false)
+     */
+    private $lastName;
+
+    /**
+     * @ORM\Column(type="json_array")
      */
     private $roles = [];
 
@@ -43,14 +59,14 @@ class User implements UserInterface
      */
     private $isVerified = false;
 
+
     /**
-     * @ORM\OneToMany(targetEntity="Folder", mappedBy="createdBy")
+     * @ORM\OneToMany(targetEntity="Project", mappedBy="createdBy")
      */
-    private $folders;
+    private $projects;
 
     public function __construct()
     {
-        $this->folders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,7 +93,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string)$this->email;
+        return (string)$this->username;
     }
 
     /**
@@ -146,27 +162,49 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getFolders()
+    public function getFirstName()
     {
-        return $this->folders;
+        return $this->firstName;
     }
 
     /**
-     * @param mixed $folders
+     * @param mixed $firstName
      */
-    public function setFolders($folders): void
+    public function setFirstName($firstName): void
     {
-        $this->folders = $folders;
+        $this->firstName = $firstName;
     }
 
-    public function addFolder($folder)
+    /**
+     * @return mixed
+     */
+    public function getLastName()
     {
-        $this->folders->add($folder);
+        return $this->lastName;
     }
 
-    public function removeFolder($folder)
+    /**
+     * @param mixed $lastName
+     */
+    public function setLastName($lastName): void
     {
-        $this->folders->removeElement($folder);
+        $this->lastName = $lastName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProjects()
+    {
+        return $this->projects;
+    }
+
+    /**
+     * @param mixed $projects
+     */
+    public function setProjects($projects): void
+    {
+        $this->projects = $projects;
     }
 
     public function __toString()

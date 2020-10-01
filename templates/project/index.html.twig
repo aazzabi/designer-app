@@ -1,37 +1,117 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Project index{% endblock %}
+{% block stylesheets %}
+
+{% endblock %}
 
 {% block body %}
-    <h1>Project index</h1>
+    <div class="row" style="padding-bottom: 50px">
+        <div class="col-md-10">
+            <h2>Liste des projets</h2>
+        </div>
+        <div class="col-md-2 text-right">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProjectModal">
+                <i class="fa fa-plus" ></i> Ajouter
+            </button>
+        </div>
+    </div>
+    <div class="modal fade" id="addProjectModal"
+         aria-labelledby="exampleModalLabel" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                {{ form_start(form) }}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_widget(form) }}
+                    {{ form_widget(form.client) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <button class="btn btn-success">{{ button_label|default('Confimer') }}</button>
+                {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>CreatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for project in projects %}
-            <tr>
-                <td>{{ project.id }}</td>
-                <td>{{ project.name }}</td>
-                <td>{{ project.createdAt ? project.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('project_show', {'id': project.id}) }}">show</a>
-                    <a href="{{ path('project_edit', {'id': project.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-responsive" style="overflow: hidden; outline: none;">
+        <div id="table-files_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table id="table-files" class="table table-striped table-hover dataTable no-footer" role="grid"
+                           aria-describedby="table-files_info">
+                        <thead>
+                        <tr role="row">
+                            <th class="" style="width: 15px;">Type
+                            </th>
+                            <th class="" style="width: 250px;">Name
+                            </th>
+                            <th class="" style="width: 100px;">Date de création
+                            </th>
+                            <th class="" style="width: 100px;">Date d'écheance
+                            </th>
+                            <th class="" style="width: 100px;">Label
+                            </th>
+                            <th style="width: 120px;">Client
+                            </th>
+                            <th style="width: 66px;">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for project in projects %}
+
+                            <tr role="row" class="odd">
+                                <td class="">
+                                    <figure class="avatar avatar-sm mr-3">
+                                            <span class="avatar-title rounded-pill">
+                                                <i class="ti-image"></i>
+                                                {#<i class="ti-folder"></i>#}
+                                           </span>
+                                    </figure>
+                                </td>
+                                <td>
+                                    <a href="{{ path('project_show', {'id': project.id}) }}"
+                                       class="d-flex align-items-center">
+                                         <span class="d-flex flex-column">
+                                            <span class="text-primary">{{ project.name }}</span>
+                                            <span class="small font-italic">{{ project.createdBy.username }}</span>
+                                        </span>
+                                    </a>
+                                </td>
+                                <td>{{ project.createdAt | date('m/d/Y') }}</td>
+                                <td>{{ project.createdAt | date('m/d/Y') }}</td>
+                                <td class="sorting_1">
+                                    <div class="badge bg-success-bright text-success">Social Media</div>
+                                </td>
+                                <td>
+                                    {{ project.client.username }}
+                                </td>
+                                <td class="btn-group">
+                                    <a href="{{ path('project_edit', {'id': project.id}) }}"
+                                       class="btn btn-sm bg-warning"><i class="fa fa-pencil"></i> </a>&nbsp
+                                    <a onclick="return confirm('Are you sure you want to delete this item?');"
+                                       href="{{ path('project_delete', {'id': project.id}) }}"
+                                       class="btn btn-sm btn-danger"><i class="fa fa-1x fa-trash"></i> </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <a href="{{ path('project_new') }}">Create new</a>
+    {% block javascripts %}
+        <script>
+            $('#table-files').DataTable();
+        </script>
+    {% endblock %}
 {% endblock %}

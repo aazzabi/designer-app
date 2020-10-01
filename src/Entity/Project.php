@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Form\FolderType;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -23,9 +24,33 @@ class Project
     private $name;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="projects")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     */
+    private $createdBy;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="client", referencedColumnName="id")
+     */
+    private $client;
+
+    /**
+     * @ORM\Column(name="created_at",type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Folder", mappedBy="project")
+     */
+    private $folders;
+
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime('now');
+    }
+
 
     public function getId(): ?int
     {
@@ -53,6 +78,68 @@ class Project
     {
         $this->createdAt = $createdAt;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param mixed $createdBy
+     */
+    public function setCreatedBy($createdBy): void
+    {
+        $this->createdBy = $createdBy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @param mixed $client
+     */
+    public function setClient($client): void
+    {
+        $this->client = $client;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFolders()
+    {
+        return $this->folders;
+    }
+
+    /**
+     * @param mixed $folders
+     */
+    public function setFolders($folders): void
+    {
+        $this->folders = $folders;
+    }
+
+    public function addFolder(Folder $f)
+    {
+        $this->folders->add($f);
+        $f->setProject($this);
+        return $this;
+    }
+
+    public function removeFolder(Folder $f)
+    {
+        $this->folders->removeElement($f);
+        $f->setProject(null);
         return $this;
     }
 }

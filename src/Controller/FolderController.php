@@ -11,12 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/folder", name="folder_")
+ * @Route("/folder")
  */
 class FolderController extends AbstractController
 {
     /**
-     * @Route("/", name="index")
+     * @Route("/", name="folder_index")
      */
     public function index()
     {
@@ -38,8 +38,8 @@ class FolderController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $images = $form->get('images')->getData();
 
-            foreach($images as $key => $img){
-                $fichier = md5(uniqid()).'.'. $img->guessExtension();
+            foreach ($images as $key => $img) {
+                $fichier = md5(uniqid()) . '.' . $img->guessExtension();
                 $img->move(
                     $this->getParameter('images_directory'),
                     $fichier
@@ -63,7 +63,33 @@ class FolderController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
+     * @Route("/{id}", name="folder_show", methods={"GET", "POST"})
+     */
+    public function show(Request $request, Folder $folder): Response
+    {
+        $childFld = new Folder();
+        $form = $this->createForm(FolderType::class, $childFld);
+        $form->handleRequest($request);
+        $entityManager = $this->getDoctrine()->getManager();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $folder->addChildren($childFld);
+            $entityManager->persist($childFld);
+            $entityManager->persist($folder);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('folder_show', ['id' => $folder->getId()]);
+        }
+
+        return $this->render('folder/show.html.twig', [
+            'folder' => $folder,
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
+     * @Route("/{id}/edit", name="folder_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Folder $folder): Response
     {
@@ -72,9 +98,9 @@ class FolderController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $images = $folder->getImages();
-            foreach($images as $key => $img){
+            foreach ($images as $key => $img) {
                 $img->setFolder($folder);
-                $img->set($key,$folder);
+                $img->set($key, $folder);
             }
 
             $entityManager = $this->getDoctrine()->getManager();

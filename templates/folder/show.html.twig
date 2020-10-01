@@ -1,0 +1,212 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Project{% endblock %}
+{% block stylesheets %}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: source sans pro;
+        }
+
+        h3 {
+            font-weight: 400;
+            font-size: 16px;
+        }
+
+        p {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .stage {
+            max-width: 90%;
+            margin: 3% 5%;
+            position: relative;
+        }
+
+        .tile {
+            border-radius: 3px;
+            width: calc(20% - 17px);
+            margin-bottom: 23px;
+            text-align: center;
+            border: 1px solid #eeeeee;
+            transition: 0.2s all cubic-bezier(0.4, 0.0, 0.2, 1);
+            position: relative;
+            padding: 35px 16px 25px;
+            margin-right: 17px;
+            cursor: pointer;
+            background-color: #ffffffbd;
+        }
+
+        .tile:hover {
+            /*box-shadow: 0px 7px 5px -6px rgba(0, 0, 0, 0.12);*/
+        }
+
+        .tile i {
+            color: #00A8FF !important;
+            height: 55px;
+            margin-bottom: 20px;
+            font-size: 55px;
+            display: block;
+            line-height: 54px;
+            cursor: pointer;
+        }
+
+        .tile i.fa-image {
+            color: #8fd9ff !important;
+        }
+
+        .back {
+            font-size: 26px;
+            border-radius: 50px;
+            background: #00a8ff;
+            border: 0;
+            color: white;
+            width: 60px;
+            height: 60px;
+            margin: 20px 20px 0;
+            outline: none;
+            cursor: pointer;
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-10 btn-group">
+            {% if not folder.parent %}
+                <a href="{{ path('project_show',{'id': folder.project.id}) }}"
+                   style="padding-right: 25px;padding-top: 7px; ">
+                    <i class="fa fa-chevron-left fa-2x dark"></i>
+                </a>
+            {% else %}
+                <a href="{{ path('folder_show',{'id': folder.parent.id}) }}"
+                   style="padding-right: 25px;padding-top: 7px; ">
+                    <i class="fa fa-chevron-left fa-2x dark"></i>
+                </a>
+            {% endif %}
+            <h1>Folder : {{ folder.name }}</h1>
+        </div>
+        <div class="col-md-2 text-right">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFolderModal">
+                <i class="fa fa-plus"></i> Ajouter
+            </button>
+        </div>
+    </div>
+    <div class="modal fade" id="addFolderModal"
+         aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                {{ form_start(form) }}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_widget(form) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <button class="btn btn-success">{{ button_label|default('Confimer') }}</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="stage">
+
+        <div class="folder-wrap level-current scrolling">
+            {% for folder in folder.children %}
+                <a href="{{ path('folder_show', {'id': folder.id}) }}" class="tile folder">
+                    <div>
+                        <i class="fa fa-folder"></i>
+                        <h3>{{ folder.name }}</h3>
+                        <p>{{ folder.description }}</p>
+                    </div><!-- .tile.folder -->
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="stage">
+        {% for folder in folder.children %}
+            <div class="tile form">
+                <i class="fa fa-image"></i>
+                <h3>Form name</h3>
+                <p>Something something</p>
+            </div><!-- .tile.form -->
+        {% endfor %}
+    </div>
+
+
+
+    {#<div class="tile form">#}
+    {#<i class="fa fa-image"></i>#}
+    {#<h3>Form name</h3>#}
+    {#<p>Something something</p>#}
+    {#</div><!-- .tile.form -->#}
+
+    {#<div class="tile form">#}
+    {#<i class="fa fa-image"></i>#}
+    {#<h3>Form name</h3>#}
+    {#<p>Something something</p>#}
+    {#</div><!-- .tile.form -->#}
+
+    {#<div class="tile form">#}
+    {#<i class="fa fa-image"></i>#}
+    {#<h3>Form name</h3>#}
+    {#<p>Something something</p>#}
+    {#</div><!-- .tile.form -->#}
+
+
+
+
+    {#<a href="{{ path('project_index') }}">back to list</a>#}
+    {#<a href="{{ path('project_edit', {'id': project.id}) }}">edit</a>#}
+    {#{{ include('project/_delete_form.html.twig') }}#}
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+
+            // Folder on click
+            $('.folder').on("click", function () {
+
+                console.log("Drill down");
+                $('.level-up').removeClass('level-up');
+                $('.level-current').addClass('level-up');
+                $('.level-current').removeClass('level-current');
+                $('.level-down').addClass('level-current');
+                $('.level-down').removeClass('level-down').next().addClass('level-down');
+
+            });
+
+            // Back on Click
+            $('.back').on("click", function () {
+                if (
+                    $('.level-current').is(':first-child')) {
+                    console.log("Current is top");
+                }
+                else {
+                    console.log("Drill back up");
+                    $('.level-down').removeClass('level-down')
+                    $('.level-current').addClass('level-down');
+                    $('.level-current').removeClass('level-current');
+                    $('.level-up').addClass('level-current');
+                    $('.level-up').removeClass('level-up').prev().addClass('level-up');
+                }
+
+            });
+
+
+        });
+    </script>
+{% endblock %}

@@ -1,42 +1,94 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {#<link rel="stylesheet" href="/stylesheets/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">#}
+    <style>
+        body {
+            font-family: "Josefin Sans" !important;
+        }
+    </style>
+    <link href="/filedash/fonts/css2.css" rel="stylesheet">
+    <!-- App css -->
+    <link rel="stylesheet" href="/filedash/assets/css/app.min.css" type="text/css">
+    <link rel="stylesheet" href="/filedash/vendors/bundle.css" type="text/css">
 
-{% block title %}Log in!{% endblock %}
+    <link href="/theme/css/font-face.css" rel="stylesheet" media="all">
+    <link href="/theme/css/theme.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
 
-{% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+    <link rel="stylesheet" href="/filedash/vendors/bundle.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="/filedash/vendors/quill/quill.snow.css" rel="stylesheet" type="text/css">
+    <link href="/filedash/vendors/jstree/themes/default/style.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/filedash/vendors/clockpicker/bootstrap-clockpicker.min.css" type="text/css">
+    <link rel="stylesheet" href="/filedash/vendors/datepicker/daterangepicker.css" type="text/css">
+    <link rel="stylesheet" href="/filedash/vendors/dataTable/datatables.min.css" type="text/css">
+    <link rel="stylesheet" href="/filedash/vendors/select2/css/select2.min.css" type="text/css">
+    {% block stylesheets %}{% endblock %}
+</head>
+
+<body class="animsition" style="animation-duration: 900ms; opacity: 1;">
+<div class="page-wrapper">
+    <div class="page-content--bge5">
+        <div class="container">
+            <div class="login-wrap">
+                <div class="login-content">
+                    <div class="login-form">
+
+                        <form method="post">
+                            {% if error %}
+                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
+
+                            {% if app.user %}
+                                <div class="mb-3">
+                                    You are logged in as {{ app.user.username }}, <a
+                                            href="{{ path('app_logout') }}">Logout</a>
+                                </div>
+                            {% endif %}
+
+                            <h1 class="h3 mb-3 font-weight-normal">Veuillez se connecter</h1>
+                            <label for="inputEmail">Email</label>
+                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
+                                   class="form-control" required autofocus>
+                            <label for="inputPassword">Mot de passe</label>
+                            <input type="password" name="password" id="inputPassword" class="form-control" required>
+                            <br>
+                            <input type="hidden" name="_csrf_token"
+                                   value="{{ csrf_token('authenticate') }}"
+                            >
+
+                            {#
+                                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                                See https://symfony.com/doc/current/security/remember_me.html
+
+                                <div class="checkbox mb-3">
+                                    <label>
+                                        <input type="checkbox" name="_remember_me"> Remember me
+                                    </label>
+                                </div>
+                            #}
+
+                            <button class="btn btn-lg btn-primary" type="submit">
+                                Se connecter
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-    {% endif %}
-
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
-        </div>
-    #}
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
-{% endblock %}
+    </div>
+</div>

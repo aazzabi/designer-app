@@ -25,22 +25,16 @@ class Folder
      */
     private $name;
 
+
+    /**
+     * @ORM\Column(type="string", length=555555)
+     */
+    private $description;
+
     /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="folders")
-     * @ORM\JoinColumn(name="createdBy", referencedColumnName="id")
-     */
-    private $createdBy;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="client", referencedColumnName="id")
-     */
-    private $client;
 
     /**
      * @ORM\OneToMany(targetEntity="Image", mappedBy="folder", orphanRemoval=true, )
@@ -53,10 +47,16 @@ class Folder
     private $children;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Folder", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Folder", inversedBy="children", cascade={"remove"})
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     private $parent;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Project")
+     * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     */
+    private $project;
 
     public function __construct()
     {
@@ -93,34 +93,6 @@ class Folder
         $this->createdAt = $createdAt;
 
         return $this;
-    }
-
-    public function getCreatedBy(): ?string
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(string $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    /**
-     * @param mixed $client
-     */
-    public function setClient($client): void
-    {
-        $this->client = $client;
     }
 
     /**
@@ -169,9 +141,12 @@ class Folder
         $this->children = $children;
     }
 
-    public function addChildren($img)
+    public function addChildren($fld)
     {
-        $this->children->add($img);
+        $this->children->add($fld);
+        $fld->setParent($this);
+        return $this;
+
     }
 
     public function removeChildren($img)
@@ -194,5 +169,43 @@ class Folder
     {
         $this->parent = $parent;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * @param mixed $project
+     */
+    public function setProject($project): void
+    {
+        $this->project = $project;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
+    {
+        $this->description = $description;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
 
 }
