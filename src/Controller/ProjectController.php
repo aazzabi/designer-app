@@ -7,6 +7,7 @@ use App\Entity\Project;
 use App\Form\FolderType;
 use App\Form\ProjectType;
 use App\Repository\ProjectRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,57 +20,60 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProjectController extends AbstractController
 {
     /**
-     * @Route("/", name="project_index", methods={"GET", "POST"})
+     * @Route("/{id}", name="project_index", methods={"GET", "POST"})
      */
-    public function index(Request $request, ProjectRepository $projectRepository): Response
+    public function index(Request $request, ProjectRepository $projectRepository, UserRepository $userRepository, $id): Response
     {
         $project = new Project();
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
         $userLogged = $this->getUser();
+        $client = $userRepository->find($id);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $project->setClient($client);
             $project->setCreatedBy($userLogged);
             $entityManager->persist($project);
             $entityManager->flush();
 
-            return $this->redirectToRoute('project_index');
+            return $this->redirectToRoute('project_index', ['id' => $id ] );
         }
 
         return $this->render('project/index.html.twig', [
+            'client' => $client,
             'form' => $form->createView(),
-            'projects' => $projectRepository->findAll(),
+            'projects' => $projectRepository->findBy(['client' => $client]),
         ]);
     }
 
+//    /**
+//     * @Route("/new", name="project_new", methods={"GET","POST"})
+//     */
+//    public function new(Request $request): Response
+//    {
+//        $project = new Project();
+//        $form = $this->createForm(ProjectType::class, $project);
+//        $form->handleRequest($request);
+//        $userLogged = $this->getUser();
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $entityManager = $this->getDoctrine()->getManager();
+//            $project->setCreatedBy($userLogged);
+//            $entityManager->persist($project);
+//            $entityManager->flush();
+//
+//            return $this->redirectToRoute('project_index' , ['id' => $id ]);
+//        }
+//
+//        return $this->render('project/new.html.twig', [
+//            'project' => $project,
+//            'form' => $form->createView(),
+//        ]);
+//    }
+
     /**
-     * @Route("/new", name="project_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $project = new Project();
-        $form = $this->createForm(ProjectType::class, $project);
-        $form->handleRequest($request);
-        $userLogged = $this->getUser();
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $project->setCreatedBy($userLogged);
-            $entityManager->persist($project);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('project_index');
-        }
-
-        return $this->render('project/new.html.twig', [
-            'project' => $project,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="project_show", methods={"GET", "POST"})
+     * @Route("/detail/{id}", name="project_show", methods={"GET", "POST"})
      */
     public function show(Request $request,Project $project): Response
     {
@@ -104,7 +108,7 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('project_index');
+            return $this->redirectToRoute('project_index', ['id' => $project->getClient()->getId() ]);
         }
 
         return $this->render('project/edit.html.twig', [
@@ -119,9 +123,10 @@ class ProjectController extends AbstractController
     public function delete(Request $request, Project $project): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
+        $id = $project->getClient()->getId();
         $entityManager->remove($project);
         $entityManager->flush();
 
-        return $this->redirectToRoute('project_index');
+        return $this->redirectToRoute('project_index', ['id' => $id ]);
     }
 }

@@ -7,34 +7,37 @@
 
 {% block body %}
     <div class="row" style="padding-bottom: 50px">
-        <div class="col-md-10">
-            <h2>Liste des projets</h2>
+        <div class="col-md-9">
+            <h2><b>Liste des projets </b></h2>
+            <h4>Client : {{ client.username }} </h4>
         </div>
-        <div class="col-md-2 text-right">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProjectModal">
-                <i class="fa fa-plus" ></i> Ajouter
+        <div class="col-md-3 text-right">
+            <button type="button" class="btn  btn-sm btn-primary" data-toggle="modal" data-target="#addProjectModal">
+                <i class="fa fa-plus"></i> Ajouter
             </button>
+            <a class="btn btn-sm btn-secondary" href="{{ path('homepage') }}">
+                <i class="fa fa-backward"></i> Retour à la liste
+            </a>
         </div>
     </div>
     <div class="modal fade" id="addProjectModal"
-         aria-labelledby="exampleModalLabel" >
+         aria-labelledby="exampleModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 {{ form_start(form) }}
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     {{ form_widget(form) }}
-                    {{ form_widget(form.client) }}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                     <button class="btn btn-success">{{ button_label|default('Confimer') }}</button>
-                {{ form_end(form) }}
+                    {{ form_end(form) }}
                 </div>
             </div>
         </div>
@@ -108,10 +111,10 @@
         </div>
     </div>
 
-    <a href="{{ path('project_new') }}">Create new</a>
-    {% block javascripts %}
-        <script>
-            $('#table-files').DataTable();
-        </script>
-    {% endblock %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#table-files').DataTable();
+    </script>
 {% endblock %}

@@ -59,6 +59,11 @@ class User implements UserInterface
      */
     private $isVerified = false;
 
+    /**
+     * @ORM\Column(type="datetime", nullable= true)
+     */
+    private $lastLogin;
+
 
     /**
      * @ORM\OneToMany(targetEntity="Project", mappedBy="createdBy")
@@ -67,6 +72,7 @@ class User implements UserInterface
 
     public function __construct()
     {
+
     }
 
     public function getId(): ?int
@@ -113,6 +119,11 @@ class User implements UserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public function hasRole($role)
+    {
+        return in_array(strtoupper($role), $this->getRoles(), true);
     }
 
     /**
@@ -210,6 +221,22 @@ class User implements UserInterface
     public function __toString()
     {
         return $this->getUsername();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastLogin()
+    {
+        return $this->lastLogin;
+    }
+
+    /**
+     * @param mixed $lastLogin
+     */
+    public function setLastLogin($lastLogin): void
+    {
+        $this->lastLogin = $lastLogin;
     }
 
 

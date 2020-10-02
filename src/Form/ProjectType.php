@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,22 +23,9 @@ class ProjectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('client', EntityType::class, array(
-                'class' => User::class,
-                'expanded' => true,
-//                'choices' => $this->userRepository->findAllClients(),
-                'query_builder' => function (UserRepository $er) {
-                    return $er->createQueryBuilder('u')
-//                        ->where('u.roles IN (:role)')
-//                        ->where('u.roles IN (:role)')
-//                        ->setParameter('role', 'ROLE_CLIENT')
-                        ->orderBy('u.id', 'ASC');
-                },
-                'choice_label' => function ($u) {
-                    return '#' . $u->getId() . ' (' . $u->getUsername() . ')';
-                },
-            ));
+            ->add('name', TextType::class, [
+                'label' => 'Nom de projet'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Clients{% endblock %}
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="row" style="padding-bottom: 50px">
+        <div class="col-md-10">
+            <h2>Liste des clients</h2>
+        </div>
+    </div>
+    <div class="table-responsive" style="overflow: hidden; outline: none;">
+        <div id="table-files_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table id="table" class="table table-striped table-hover dataTable no-footer" role="grid"
+                           aria-describedby="table-files_info">
+                        <thead>
+                        <tr role="row">
+                            <th class="" style="width: 15px;">
+                            </th>
+                            <th class="" style="width: 250px;">Nom
+                            </th>
+                            <th class="" style="width: 100px;">Email
+                            </th>
+                            <th class="" style="width: 100px;">Derniére activité
+                            </th>
+                            <th style="width: 66px;">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for client in clients %}
+
+                            <tr role="row" class="odd">
+                                <td class="">
+                                    <figure class="avatar avatar-sm mr-3">
+                                            <span class="avatar-title rounded-pill">
+                                           </span>
+                                    </figure>
+                                </td>
+                                <td>
+                                    <a href="{{ path('project_index', {'id': client.id}) }}"
+                                       class="d-flex align-items-center">
+                                         <span class="d-flex flex-column">
+                                            <span class="text-primary">{{ client.username }}</span>
+                                            <span class="small font-italic">{{ client.firstName}} {{ client.lastName }}</span>
+                                        </span>
+                                    </a>
+                                </td>
+                                <td>{{ client.email }}</td>
+                                <td>{{ client.lastLogin | date('m/d/Y') }}</td>
+                                <td>
+                                </td>
+                                <td class="btn-group">
+                                    {#<a href="{{ path('client_edit', {'id': client.id}) }}"#}
+                                       {#class="btn btn-sm bg-warning"><i class="fa fa-pencil"></i> </a>&nbsp#}
+                                    {#<a onclick="return confirm('Are you sure you want to delete this item?');"#}
+                                       {#href="{{ path('client_delete', {'id': client.id}) }}"#}
+                                       {#class="btn btn-sm btn-danger"><i class="fa fa-1x fa-trash"></i> </a>#}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#table').DataTable();
+    </script>
+{% endblock %}
