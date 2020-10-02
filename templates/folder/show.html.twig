@@ -73,6 +73,12 @@
         }
 
     </style>
+    <style>
+        .example-image {
+            max-width: 100%
+        }
+    </style>
+    <link rel="stylesheet" href="/lightbox/dist/css/lightbox.min.css">
 {% endblock %}
 
 {% block body %}
@@ -135,45 +141,43 @@
             {% endfor %}
         </div>
     </div>
-    <div class="stage">
-        {% for folder in folder.children %}
-            <div class="tile form">
-                <i class="fa fa-image"></i>
-                <h3>Form name</h3>
-                <p>Something something</p>
-            </div><!-- .tile.form -->
-        {% endfor %}
+    <div class="stage" style="display: flex;">
+        {#<a class="example-image-link" href="http://lokeshdhakar.com/projects/lightbox2/images/image-3.jpg" data-lightbox="example-set" data-title="Click the right half of the image to move forward.">#}
+        {#<img class="example-image" src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-3.jpg" alt=""/>#}
+        {#</a>#}
+        {#<div class="folder-wrap level-current scrolling">#}
+            {% for img in folder.images %}
+                    <a class="example-image-link tile form"
+                       href="{{ asset('/folders/images/'~ img.imageName) }}"
+                       data-lightbox="example-set" data-title="Click the right half of the image to move forward.">
+                        <img class="example-image" src="{{ asset('/folders/images/'~ img.imageName) }}" alt=""/>
+                    </a>
+            {% endfor %}
+        {#</div>#}
     </div>
 
 
+    {#<section>#}
+    {#<h3>Two Individual Images</h3>#}
+    {#<div>#}
+    {#<a class="example-image-link" href="http://lokeshdhakar.com/projects/lightbox2/images/image-1.jpg" data-lightbox="example-1"><img class="example-image" src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-1.jpg" alt="image-1" /></a>#}
+    {#<a class="example-image-link" href="http://lokeshdhakar.com/projects/lightbox2/images/image-2.jpg" data-lightbox="example-2" data-title="Optional caption."><img class="example-image" src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-2.jpg" alt="image-1"/></a>#}
+    {#</div>#}
 
-    {#<div class="tile form">#}
-    {#<i class="fa fa-image"></i>#}
-    {#<h3>Form name</h3>#}
-    {#<p>Something something</p>#}
-    {#</div><!-- .tile.form -->#}
+    {#<hr />#}
 
-    {#<div class="tile form">#}
-    {#<i class="fa fa-image"></i>#}
-    {#<h3>Form name</h3>#}
-    {#<p>Something something</p>#}
-    {#</div><!-- .tile.form -->#}
-
-    {#<div class="tile form">#}
-    {#<i class="fa fa-image"></i>#}
-    {#<h3>Form name</h3>#}
-    {#<p>Something something</p>#}
-    {#</div><!-- .tile.form -->#}
-
-
-
-
-    {#<a href="{{ path('project_index') }}">back to list</a>#}
-    {#<a href="{{ path('project_edit', {'id': project.id}) }}">edit</a>#}
-    {#{{ include('project/_delete_form.html.twig') }}#}
+    {#<h3>A Four Image Set</h3>#}
+    {#<div>#}
+    {#<a class="example-image-link" href="http://lokeshdhakar.com/projects/lightbox2/images/image-3.jpg" data-lightbox="example-set" data-title="Click the right half of the image to move forward."><img class="example-image" src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-3.jpg" alt=""/></a>#}
+    {#<a class="example-image-link" href="http://lokeshdhakar.com/projects/lightbox2/images/image-4.jpg" data-lightbox="example-set" data-title="Or press the right arrow on your keyboard."><img class="example-image" src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-4.jpg" alt="" /></a>#}
+    {#<a class="example-image-link" href="http://lokeshdhakar.com/projects/lightbox2/images/image-5.jpg" data-lightbox="example-set" data-title="The next image in the set is preloaded as you're viewing."><img class="example-image" src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-5.jpg" alt="" /></a>#}
+    {#<a class="example-image-link" href="http://lokeshdhakar.com/projects/lightbox2/images/image-6.jpg" data-lightbox="example-set" data-title="Click anywhere outside the image or the X to the right to close."><img class="example-image" src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-6.jpg" alt="" /></a>#}
+    {#</div>#}
+    {#</section>#}
 
 {% endblock %}
 {% block javascripts %}
+    <script src="/lightbox/dist/js/lightbox-plus-jquery.min.js"></script>
     <script>
         $(document).ready(function () {
 
