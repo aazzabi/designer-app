@@ -8,11 +8,16 @@ use App\Form\FolderType;
 use App\Form\ImageType;
 use App\Repository\FolderRepository;
 use App\Repository\ImageRepository;
+use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Twig\Mime\NotificationEmail;
 
 /**
  * @Route("/folder")
@@ -104,6 +109,7 @@ class FolderController extends AbstractController
         //submitting new folder form
         if ($form->isSubmitted() && $form->isValid()) {
             $childFld->setParent($folder);
+            $childFld->setProject($folder->getProject());
             $entityManager->persist($childFld);
             $entityManager->persist($folder);
             $entityManager->flush();
@@ -118,6 +124,34 @@ class FolderController extends AbstractController
             'formPhoto' => $formImage->createView(),
             'form' => $form->createView(),
         ]);
+    }
+
+
+    /**
+     * @Route("/alertClient/{id}", name="alert_client", methods={"GET", "POST"} )
+     *
+     */
+    public function alertClient( Request $request, $id,
+                                 ProjectRepository $projectRepository, FolderRepository $folderRepository,
+                                 MailerInterface $mailer)
+    {
+        $folder = $folderRepository->find($id);
+        $project = $folder->getProject();
+        $client = $project->getClient();
+        $email = (new Email())
+            ->from(new Address( $_ENV['EMAIL_BOT'] , 'CheckMyDesign Mail BOT'))
+            ->to($client->getEmail())
+            ->subject('Nouveau images disponbiles')
+            ->html("Cher ". $client->getLastName() .'<br> Vous avez des nouveaux images téléchargés sur votre espace client <br> 
+                    Veuillez les consulter et nous donner vos retours . <br>
+                    Cordialement '. $this->getUser()->getFirstName() );
+
+        $mailer->send($email);
+
+        $json = json_encode($email);
+        $response = new Response($json, 200);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 
 }

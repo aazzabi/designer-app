@@ -93,7 +93,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-md-10 btn-group">
+        <div class="col-md-9 btn-group">
             {% if not folder.parent %}
                 <a href="{{ path('project_show',{'id': folder.project.id}) }}"
                    style="padding-right: 25px;padding-top: 7px; ">
@@ -108,13 +108,16 @@
             <h1>Folder : {{ folder.name }}</h1>
         </div>
         {% if is_granted('ROLE_DESIGNER') %}
-            <div class="col-md-2 text-right">
+            <div class="col-md-3 text-right">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFolderModal">
                     <i class="fa fa-plus"></i> Dossier
                 </button>
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addPhotoModal">
                     <i class="fa fa-plus"></i> Images
                 </button>
+                <a id="alertClient" class="btn-info btn">
+                    <i class="fa fa-info"> Informer le client</i>
+                </a>
             </div>
         {% endif %}
     </div>
@@ -237,7 +240,9 @@
 
     {# add images form#}
     {# preview uploaded images#}
-    {#<script src="/javascripts/jquery-3.4.1.min.js"></script>#}
+    <script src="/javascripts/jquery-3.4.1.min.js"></script>
+    {#<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>#}
+    {#<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>#}
     <script src="/javascripts/jquery.md5.js"></script>
     <script>
         function readURL(input, placeToInsertImagePreview) {
@@ -268,6 +273,23 @@
 
         $('.clearFiles').click(function (evt) {
             $("div.gallery").replaceWith('<div class="gallery"></div>');
+        })
+    </script>
+    <script>
+
+        $('#alertClient').click(function (evt) {
+            // alert('clicked');
+        {#href="{{ path('alert_client', {'id': folder.id}) }}"#}
+            $.ajax({
+                type: "post",
+                url: '{{ path('alert_client', {'id': folder.id}) }}',
+                error: function (response) {
+                    console.log("err", response);
+                },
+                success: function (response) {
+                    console.log("success", response);
+                }
+            });
         })
     </script>
 
