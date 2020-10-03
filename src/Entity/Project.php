@@ -41,10 +41,10 @@ class Project
      */
     private $createdAt;
 
-//    /**
-//     * @ORM\OneToMany(targetEntity="Folder", mappedBy="project")
-//     */
-//    private $folders;
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $seen = false;
 
 
     public function __construct()
@@ -114,6 +114,28 @@ class Project
     {
         $this->client = $client;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSeen()
+    {
+        return $this->seen;
+    }
+
+    /**
+     * @param mixed $seen
+     */
+    public function setSeen($seen): void
+    {
+        $this->seen = $seen;
+    }
+
+    public function wasSeen(): bool
+    {
+        return $this->seen;
+    }
+
 
 
 }

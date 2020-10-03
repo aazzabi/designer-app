@@ -61,8 +61,9 @@
                             </th>
                             <th class="" style="width: 100px;">Date d'écheance
                             </th>
-                            <th class="" style="width: 100px;">Label
-                            </th>
+                            {% if is_granted('ROLE_DESIGNER') %}
+                            <th class="" style="width: 100px;">Etat</th>
+                            {% endif %}
                             <th style="width: 120px;">Client
                             </th>
                             <th style="width: 66px;">Actions</th>
@@ -91,9 +92,19 @@
                                 </td>
                                 <td>{{ project.createdAt | date('m/d/Y') }}</td>
                                 <td>{{ project.createdAt | date('m/d/Y') }}</td>
+                                {% if is_granted('ROLE_DESIGNER') %}
                                 <td class="sorting_1">
-                                    <div class="badge bg-success-bright text-success">Social Media</div>
+                                    {% if project.seen == true %}
+                                        <div class="badge bg-success-bright text-success">
+                                            <i class="fa fa-2x  fa-eye"></i>
+                                        </div>
+                                    {% else %}
+                                        <div class="badge bg-danger-bright text-danger">
+                                            <i class="fa fa-2x fa-eye-slash"></i>
+                                        </div>
+                                    {% endif %}
                                 </td>
+                                {% endif %}
                                 <td>
                                     {{ project.client.username }}
                                 </td>

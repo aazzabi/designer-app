@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @property  token_storage
  * @Route("/projects")
  */
 class ProjectController extends AbstractController
@@ -38,7 +37,7 @@ class ProjectController extends AbstractController
             $entityManager->persist($project);
             $entityManager->flush();
 
-            return $this->redirectToRoute('project_index', ['id' => $id ] );
+            return $this->redirectToRoute('project_index', ['id' => $id]);
         }
 
         return $this->render('project/index.html.twig', [
@@ -48,40 +47,24 @@ class ProjectController extends AbstractController
         ]);
     }
 
-//    /**
-//     * @Route("/new", name="project_new", methods={"GET","POST"})
-//     */
-//    public function new(Request $request): Response
-//    {
-//        $project = new Project();
-//        $form = $this->createForm(ProjectType::class, $project);
-//        $form->handleRequest($request);
-//        $userLogged = $this->getUser();
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $entityManager = $this->getDoctrine()->getManager();
-//            $project->setCreatedBy($userLogged);
-//            $entityManager->persist($project);
-//            $entityManager->flush();
-//
-//            return $this->redirectToRoute('project_index' , ['id' => $id ]);
-//        }
-//
-//        return $this->render('project/new.html.twig', [
-//            'project' => $project,
-//            'form' => $form->createView(),
-//        ]);
-//    }
 
     /**
      * @Route("/detail/{id}", name="project_show", methods={"GET", "POST"})
      */
-    public function show(Request $request,Project $project, FolderRepository $folderRepository): Response
+    public function show(Request $request, Project $project, FolderRepository $folderRepository): Response
     {
         $folder = new Folder();
         $form = $this->createForm(FolderType::class, $folder);
         $form->handleRequest($request);
         $entityManager = $this->getDoctrine()->getManager();
+
+        // si le client visite le projet pour la premiére fois
+        // si client + projet.seen == false
+        if ($this->getUser()->hasRole('ROLE_CLIENT') && $project->getSeen() === false) {
+            $project->setSeen(1);
+            $entityManager->flush();
+        }
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $folder->setProject($project);
@@ -110,7 +93,7 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('project_index', ['id' => $project->getClient()->getId() ]);
+            return $this->redirectToRoute('project_index', ['id' => $project->getClient()->getId()]);
         }
 
         return $this->render('project/edit.html.twig', [
@@ -129,6 +112,6 @@ class ProjectController extends AbstractController
         $entityManager->remove($project);
         $entityManager->flush();
 
-        return $this->redirectToRoute('project_index', ['id' => $id ]);
+        return $this->redirectToRoute('project_index', ['id' => $id]);
     }
 }
