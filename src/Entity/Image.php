@@ -19,7 +19,8 @@ class Image
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Folder", inversedBy="images")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Folder", inversedBy="images", cascade={"remove"})
+     * @ORM\JoinColumn(name="folder_id", referencedColumnName="id",  onDelete="CASCADE")
      */
     private $folder;
 

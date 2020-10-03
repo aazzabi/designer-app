@@ -49,13 +49,13 @@ class Folder
 
     /**
      * @ORM\ManyToOne(targetEntity="Folder", inversedBy="children", cascade={"remove"})
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id",  onDelete="CASCADE")
      */
     private $parent;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Project")
-     * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Project", cascade={"remove"})
+     * @ORM\JoinColumn(name="project_id", referencedColumnName="id",  onDelete="CASCADE")
      */
     private $project;
 
