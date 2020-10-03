@@ -65,11 +65,6 @@ class User implements UserInterface
     private $lastLogin;
 
 
-    /**
-     * @ORM\OneToMany(targetEntity="Project", mappedBy="createdBy")
-     */
-    private $projects;
-
     public function __construct()
     {
 
@@ -200,22 +195,6 @@ class User implements UserInterface
     public function setLastName($lastName): void
     {
         $this->lastName = $lastName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getProjects()
-    {
-        return $this->projects;
-    }
-
-    /**
-     * @param mixed $projects
-     */
-    public function setProjects($projects): void
-    {
-        $this->projects = $projects;
     }
 
     public function __toString()

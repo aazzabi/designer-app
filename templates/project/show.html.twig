@@ -40,7 +40,7 @@
         }
 
         .folder-wrap:first-child::before {
-            content: 'Home (top of file structure)';
+            content: '';
             display: block;
             position: absolute;
             top: -40px;
@@ -134,7 +134,7 @@
     <div class="stage">
 
         <div class="folder-wrap level-current scrolling">
-            {% for folder in project.folders %}
+            {% for folder in folders %}
                 <a href="{{ path('folder_show', {'id': folder.id}) }}"  class="tile folder">
                     <div href="{{ path('folder_show', {'id': folder.id}) }}">
                         <i class="fa fa-folder"></i>

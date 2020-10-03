@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Image{% endblock %}
+{% block stylesheets %}
+    <style>
+        #image_container {
+            display: block;
+            height: auto;
+            width: 760px;
+            margin: 0 auto;
+            background: yellow;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div align="center">
+        <div id="image_container">
+            <img src="{{ asset('/folders/images/'~ image.imageName) }}" width="760" height="182" alt="test"
+                 id="image-wrapper">
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var tag_box = $("<div class=\"comment-box\"></div>").css({
+            "width": "40px",
+            "height": "40px",
+            "border": "4px solid #000000",
+            "position": "absolute",
+            "padding": "15px"
+        });
+
+        var comment_box = $("<form action='#'><input id='comment' type='text' name='comment' placeholder='Add comment'></form>").appendTo(tag_box).css({"position": "absolute"});
+
+        $("#image-wrapper").live('click', function (e) {
+            console.log('here');
+            if ($(this).parent().find('.comment-box').length === 0) {
+                $(this).parent().append(tag_box).css('top', 182).find('input#comment').focus();
+            }
+            return false;
+        });
+        $(".comment-box").live('mouseenter mouseleave', function (event) {
+            if (event.type == 'mouseout') {
+                $(this).remove();
+            }
+        })
+            .find('form').live('submit', function () {
+            var comment = $(this).find('input#comment').val();
+            var wrapperOffset = $("#image-wrapper").offset();
+            var commentBlock = '<div class="comment-block" style="position:absolute;color:white; display:block; float:left; clear:both; height:auto; width:760px; background:red;">' + comment + '</div>';
+            var posTop = wrapperOffset.top;
+            $(commentBlock).css({
+                'width': 760,
+                'top': posTop,
+                'left': wrapperOffset.left,
+                'z-Index': 100
+            });
+
+            if ($("#image-wrapper").parent().find('.comment-block').length > 0) {
+                var lastBlock = $("#image-wrapper").parent().find('.comment-block:last');
+                var lastBlockOffset = $(lastBlock).offset();
+                $(commentBlock).insertAfter($(lastBlock)).css('top', lastBlockOffset.top + $(lastBlock).height() + 4);
+            } else {
+                $(commentBlock).insertBefore('#image-wrapper');
+            }
+
+            $(this).parent().parent().find('.comment-box').remove();
+            $(this).get(0).reset();
+            return false;
+        });
+    </script>
+{% endblock %}

@@ -5,6 +5,10 @@ namespace App\Controller;
 use App\Entity\Folder;
 use App\Entity\Image;
 use App\Form\FolderType;
+use App\Form\ImageType;
+use App\Repository\FolderRepository;
+use App\Repository\ImageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +51,7 @@ class FolderController extends AbstractController
                 $i = new Image();
                 $i->setImageName($fichier);
                 $i->setUpdatedAt(new \DateTime('now'));
-                $folder->addImage($i);
+                $i->setFolder($folder);
                 $entityManager->persist($i);
             }
 
@@ -65,15 +69,41 @@ class FolderController extends AbstractController
     /**
      * @Route("/{id}", name="folder_show", methods={"GET", "POST"})
      */
-    public function show(Request $request, Folder $folder): Response
+    public function show(Request $request, Folder $folder , FolderRepository $folderRepository, ImageRepository $imageRepository): Response
     {
         $childFld = new Folder();
         $form = $this->createForm(FolderType::class, $childFld);
         $form->handleRequest($request);
         $entityManager = $this->getDoctrine()->getManager();
 
+        $arrayImgs = new Image();
+        $formImage = $this->createForm(ImageType::class, $arrayImgs);
+        $formImage->handleRequest($request);
+
+        //submitting images form
+        if ($formImage->isSubmitted() && $formImage->isValid()) {
+            $images = $formImage->get('images')->getData();
+            foreach ($images as $key => $img) {
+                $fichier = md5(uniqid()) . '.' . $img->guessExtension();
+                $img->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+                $i = new Image();
+                $i->setImageName($fichier);
+                $i->setUpdatedAt(new \DateTime('now'));
+                $i->setFolder($folder);
+
+                $entityManager->persist($i);
+                $entityManager->flush();
+            }
+
+            return $this->redirectToRoute('folder_show', ['id' => $folder->getId()]);
+        }
+
+        //submitting new folder form
         if ($form->isSubmitted() && $form->isValid()) {
-            $folder->addChildren($childFld);
+            $childFld->setParent($folder);
             $entityManager->persist($childFld);
             $entityManager->persist($folder);
             $entityManager->flush();
@@ -82,37 +112,12 @@ class FolderController extends AbstractController
         }
 
         return $this->render('folder/show.html.twig', [
+            'childrens' => $folderRepository->findBy(['parent' => $folder]),
+            'images' => $imageRepository->findBy(['folder' => $folder]),
             'folder' => $folder,
+            'formPhoto' => $formImage->createView(),
             'form' => $form->createView(),
         ]);
     }
 
-
-    /**
-     * @Route("/{id}/edit", name="folder_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Folder $folder): Response
-    {
-        $form = $this->createForm(FolderType::class, $folder);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $images = $folder->getImages();
-            foreach ($images as $key => $img) {
-                $img->setFolder($folder);
-                $img->set($key, $folder);
-            }
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($folder);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('folder_index');
-        }
-
-        return $this->render('product/edit.html.twig', [
-            'folder' => $folder,
-            'form' => $form->createView(),
-        ]);
-    }
 }

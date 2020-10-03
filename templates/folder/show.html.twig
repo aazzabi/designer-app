@@ -79,6 +79,16 @@
         }
     </style>
     <link rel="stylesheet" href="/lightbox/dist/css/lightbox.min.css">
+
+    <style>
+        .imagesPreview {
+            height: 100px;
+            padding: 10px;
+        }
+        a.folder:hover {
+            text-decoration: none;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -97,12 +107,19 @@
             {% endif %}
             <h1>Folder : {{ folder.name }}</h1>
         </div>
-        <div class="col-md-2 text-right">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFolderModal">
-                <i class="fa fa-plus"></i> Ajouter
-            </button>
-        </div>
+        {% if is_granted('ROLE_DESIGNER') %}
+            <div class="col-md-2 text-right">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFolderModal">
+                    <i class="fa fa-plus"></i> Dossier
+                </button>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addPhotoModal">
+                    <i class="fa fa-plus"></i> Images
+                </button>
+            </div>
+        {% endif %}
     </div>
+
+    {#modal add folder#}
     <div class="modal fade" id="addFolderModal"
          aria-labelledby="exampleModalLabel">
         <div class="modal-dialog" role="document">
@@ -125,55 +142,59 @@
             </div>
         </div>
     </div>
+    {#modal add photos#}
+    <div class="modal fade" id="addPhotoModal" aria-labelledby="addPhotoModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                {{ form_start(formPhoto) }}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_widget(formPhoto) }}
+                    <div class="gallery"></div>
 
+                    <a class="btn btn-danger btn-sm clearFiles">Clear files</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <button class="btn btn-success">{{ button_label|default('Confimer') }}</button>
+                    {{ form_end(formPhoto) }}
+                </div>
+            </div>
+        </div>
+    </div>
 
+    {#Folders#}
     <div class="stage">
 
         <div class="folder-wrap level-current scrolling">
-            {% for folder in folder.children %}
+            {% for folder in childrens %}
                 <a href="{{ path('folder_show', {'id': folder.id}) }}" class="tile folder">
                     <div>
                         <i class="fa fa-folder"></i>
                         <h3>{{ folder.name }}</h3>
                         <p>{{ folder.description }}</p>
-                    </div><!-- .tile.folder -->
+                    </div>
                 </a>
             {% endfor %}
         </div>
     </div>
+    {#Images#}
     <div class="stage" style="display: flex;">
-        {#<a class="example-image-link" href="http://lokeshdhakar.com/projects/lightbox2/images/image-3.jpg" data-lightbox="example-set" data-title="Click the right half of the image to move forward.">#}
-        {#<img class="example-image" src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-3.jpg" alt=""/>#}
-        {#</a>#}
-        {#<div class="folder-wrap level-current scrolling">#}
-            {% for img in folder.images %}
-                    <a class="example-image-link tile form"
-                       href="{{ asset('/folders/images/'~ img.imageName) }}"
-                       data-lightbox="example-set" data-title="Click the right half of the image to move forward.">
-                        <img class="example-image" src="{{ asset('/folders/images/'~ img.imageName) }}" alt=""/>
-                    </a>
-            {% endfor %}
-        {#</div>#}
+        {% for img in images %}
+            <a class="example-image-link tile form"
+               href="{{ asset('/folders/images/'~ img.imageName) }}"
+               data-lightbox="example-set"
+               data-title='<a href="{{ path('update_image', {'id': img.id}) }}">Ajouter un commentaire</a>'>
+                <img class="example-image" src="{{ asset('/folders/images/'~ img.imageName) }}" alt=""/>
+            </a>
+        {% endfor %}
     </div>
 
-
-    {#<section>#}
-    {#<h3>Two Individual Images</h3>#}
-    {#<div>#}
-    {#<a class="example-image-link" href="http://lokeshdhakar.com/projects/lightbox2/images/image-1.jpg" data-lightbox="example-1"><img class="example-image" src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-1.jpg" alt="image-1" /></a>#}
-    {#<a class="example-image-link" href="http://lokeshdhakar.com/projects/lightbox2/images/image-2.jpg" data-lightbox="example-2" data-title="Optional caption."><img class="example-image" src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-2.jpg" alt="image-1"/></a>#}
-    {#</div>#}
-
-    {#<hr />#}
-
-    {#<h3>A Four Image Set</h3>#}
-    {#<div>#}
-    {#<a class="example-image-link" href="http://lokeshdhakar.com/projects/lightbox2/images/image-3.jpg" data-lightbox="example-set" data-title="Click the right half of the image to move forward."><img class="example-image" src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-3.jpg" alt=""/></a>#}
-    {#<a class="example-image-link" href="http://lokeshdhakar.com/projects/lightbox2/images/image-4.jpg" data-lightbox="example-set" data-title="Or press the right arrow on your keyboard."><img class="example-image" src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-4.jpg" alt="" /></a>#}
-    {#<a class="example-image-link" href="http://lokeshdhakar.com/projects/lightbox2/images/image-5.jpg" data-lightbox="example-set" data-title="The next image in the set is preloaded as you're viewing."><img class="example-image" src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-5.jpg" alt="" /></a>#}
-    {#<a class="example-image-link" href="http://lokeshdhakar.com/projects/lightbox2/images/image-6.jpg" data-lightbox="example-set" data-title="Click anywhere outside the image or the X to the right to close."><img class="example-image" src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-6.jpg" alt="" /></a>#}
-    {#</div>#}
-    {#</section>#}
 
 {% endblock %}
 {% block javascripts %}
@@ -213,4 +234,41 @@
 
         });
     </script>
+
+    {# add images form#}
+    {# preview uploaded images#}
+    {#<script src="/javascripts/jquery-3.4.1.min.js"></script>#}
+    <script src="/javascripts/jquery.md5.js"></script>
+    <script>
+        function readURL(input, placeToInsertImagePreview) {
+            if (input.files) {
+                var filesAmount = input.files.length;
+                for (i = 0; i < filesAmount; i++) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (event) {
+                        $($.parseHTML('<img>'))
+                            .attr('src', event.target.result)
+                            .attr('class', 'imagesPreview')
+                            .appendTo(placeToInsertImagePreview);
+                    };
+
+                    reader.readAsDataURL(input.files[i]);
+                }
+            }
+        }
+
+        $("#image_images").change(function () {
+            $("div.gallery").replaceWith('<div class="gallery"></div>');
+            readURL(this, 'div.gallery');
+        });
+
+    </script>
+    <script>
+
+        $('.clearFiles').click(function (evt) {
+            $("div.gallery").replaceWith('<div class="gallery"></div>');
+        })
+    </script>
+
 {% endblock %}

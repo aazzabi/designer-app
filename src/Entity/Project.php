@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Form\FolderType;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
@@ -40,10 +41,10 @@ class Project
      */
     private $createdAt;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Folder", mappedBy="project")
-     */
-    private $folders;
+//    /**
+//     * @ORM\OneToMany(targetEntity="Folder", mappedBy="project")
+//     */
+//    private $folders;
 
 
     public function __construct()
@@ -105,6 +106,7 @@ class Project
         return $this->client;
     }
 
+
     /**
      * @param mixed $client
      */
@@ -113,33 +115,5 @@ class Project
         $this->client = $client;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getFolders()
-    {
-        return $this->folders;
-    }
 
-    /**
-     * @param mixed $folders
-     */
-    public function setFolders($folders): void
-    {
-        $this->folders = $folders;
-    }
-
-    public function addFolder(Folder $f)
-    {
-        $this->folders->add($f);
-        $f->setProject($this);
-        return $this;
-    }
-
-    public function removeFolder(Folder $f)
-    {
-        $this->folders->removeElement($f);
-        $f->setProject(null);
-        return $this;
-    }
 }

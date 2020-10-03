@@ -36,15 +36,16 @@ class Folder
      */
     private $createdAt;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Image", mappedBy="folder", orphanRemoval=true, )
-     */
-    private $images;
+//
+//    /**
+//     * @ORM\OneToMany(targetEntity="Image", mappedBy="folder", orphanRemoval=true, )
+//     */
+//    private $images;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Folder", mappedBy="parent")
-     */
-    private $children;
+//    /**
+//     * @ORM\OneToMany(targetEntity="Folder", mappedBy="parent")
+//     */
+//    private $children;
 
     /**
      * @ORM\ManyToOne(targetEntity="Folder", inversedBy="children", cascade={"remove"})
@@ -94,65 +95,65 @@ class Folder
 
         return $this;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getImages()
-    {
-        return $this->images;
-    }
-
-    /**
-     * @param mixed $images
-     */
-    public function setImages($images): void
-    {
-        $this->images = $images;
-    }
-
-    public function addImage(Image $img)
-    {
-        if (!$this->images->contains($img)) {
-            $this->images->add($img);
-            $img->setFolder($this);
-        }
-        return $this;
-    }
-
-    public function removeImage($img)
-    {
-        $this->images->removeElement($img);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getChildren()
-    {
-        return $this->children;
-    }
-
-    /**
-     * @param mixed $children
-     */
-    public function setChildren($children): void
-    {
-        $this->children = $children;
-    }
-
-    public function addChildren($fld)
-    {
-        $this->children->add($fld);
-        $fld->setParent($this);
-        return $this;
-
-    }
-
-    public function removeChildren($img)
-    {
-        $this->children->removeElement($img);
-    }
+//
+//    /**
+//     * @return mixed
+//     */
+//    public function getImages()
+//    {
+//        return $this->images;
+//    }
+//
+//    /**
+//     * @param mixed $images
+//     */
+//    public function setImages($images): void
+//    {
+//        $this->images = $images;
+//    }
+//
+//    public function addImage(Image $img)
+//    {
+//        if (!$this->images->contains($img)) {
+//            $this->images->add($img);
+//            $img->setFolder($this);
+//        }
+//        return $this;
+//    }
+//
+//    public function removeImage($img)
+//    {
+//        $this->images->removeElement($img);
+//    }
+//
+//    /**
+//     * @return mixed
+//     */
+//    public function getChildren()
+//    {
+//        return $this->children;
+//    }
+//
+//    /**
+//     * @param mixed $children
+//     */
+//    public function setChildren($children): void
+//    {
+//        $this->children = $children;
+//    }
+//
+//    public function addChildren($fld)
+//    {
+//        $this->children->add($fld);
+//        $fld->setParent($this);
+//        return $this;
+//
+//    }
+//
+//    public function removeChildren($img)
+//    {
+//        $this->children->removeElement($img);
+//    }
 
     /**
      * @return mixed

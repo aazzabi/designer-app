@@ -26,6 +26,7 @@ security:
                 # target: app_any_route
     role_hierarchy:
         ROLE_ADMIN:  ROLE_ADMIN
+        ROLE_DESIGNER:  ROLE_DESIGNER
         ROLE_CLIENT: ROLE_CLIENT
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

@@ -6,6 +6,7 @@ use App\Entity\Folder;
 use App\Entity\Project;
 use App\Form\FolderType;
 use App\Form\ProjectType;
+use App\Repository\FolderRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -75,7 +76,7 @@ class ProjectController extends AbstractController
     /**
      * @Route("/detail/{id}", name="project_show", methods={"GET", "POST"})
      */
-    public function show(Request $request,Project $project): Response
+    public function show(Request $request,Project $project, FolderRepository $folderRepository): Response
     {
         $folder = new Folder();
         $form = $this->createForm(FolderType::class, $folder);
@@ -83,7 +84,7 @@ class ProjectController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $project->addFolder($folder);
+            $folder->setProject($project);
             $entityManager->persist($project);
             $entityManager->persist($folder);
             $entityManager->flush();
@@ -92,6 +93,7 @@ class ProjectController extends AbstractController
         }
 
         return $this->render('project/show.html.twig', [
+            'folders' => $folderRepository->findBy(['project' => $project]),
             'project' => $project,
             'form' => $form->createView(),
         ]);

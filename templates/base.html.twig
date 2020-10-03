@@ -8,6 +8,7 @@
         body {
             font-family: "Josefin Sans" !important;
         }
+
         .modal-backdrop.show {
             opacity: 0;
             visibility: hidden;
@@ -50,33 +51,25 @@
     {% include 'header.html.twig' %}
 
     <div class="main-content">
-        <div class="section__content section__content--p30">
-            <div class="container-fluid">
-                {% block body %}{% endblock %}
-            </div>
+        <div class="container-fluid">
+            {% block body %}{% endblock %}
         </div>
     </div>
 
 </div>
 <script src="{{ asset('/javascripts/jquery-3.3.1.js') }}"></script>
 <script src="{{ asset('/javascripts/jquery.min.js') }}"></script>
-{#<script src="{{ asset('/javascripts/jquery.dataTables.min.js') }}"></script>#}
-{#<script src="{{ asset('/javascripts/datatables.js') }}"></script>#}
-{#<script src="{{ asset('/javascripts/datatables.bootstrap.min.js') }}"></script>#}
+<script src="{{ asset('/javascripts/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('/javascripts/datatables.js') }}"></script>
+<script src="{{ asset('/javascripts/datatables.bootstrap.min.js') }}"></script>
 
 <script src="/filedash/vendors/bundle.js"></script>
-<script src="/filedash/assets/js/raphael-min.js"></script>
-<script src="/filedash/assets/js/justgage.min.js"></script>
-
-<!-- Apex chart -->
-<script src="/filedash/assets/js/irregular-data-series.js"></script>
-<script src="/filedash/vendors/charts/apex/apexcharts.min.js"></script>
+{#<script src="/filedash/assets/js/raphael-min.js"></script>#}
+{#<script src="/filedash/assets/js/justgage.min.js"></script>#}
+{#<script src="/filedash/assets/js/irregular-data-series.js"></script>#}
+{#<script src="/filedash/vendors/charts/apex/apexcharts.min.js"></script>#}
 <script src="/filedash/vendors/dataTable/datatables.min.js"></script>
-
-<!-- Dashboard scripts -->
-<script src="/filedash/assets/js/examples/pages/file-dashboard.js"></script>
-
-<!-- App scripts -->
+{#<script src="/filedash/assets/js/examples/pages/file-dashboard.js"></script>#}
 <script src="/filedash/assets/js/app.min.js"></script>
 
 <script data-cfasync="false" src="/theme//js/email-decode.min.js"></script>
@@ -95,14 +88,18 @@
 <script src="/theme/vendor/counter-up/jquery.waypoints.min.js" type="0e3de45365ae9236cbb75824-text/javascript"></script>
 <script src="/theme/vendor/counter-up/jquery.counterup.min.js" type="0e3de45365ae9236cbb75824-text/javascript">
 </script>
-<script src="/theme/vendor/circle-progress/circle-progress.min.js" type="0e3de45365ae9236cbb75824-text/javascript"></script>
-<script src="/theme/vendor/perfect-scrollbar/perfect-scrollbar.js" type="0e3de45365ae9236cbb75824-text/javascript"></script>
-<script src="/theme/vendor/chartjs/Chart.bundle.min.js" type="0e3de45365ae9236cbb75824-text/javascript"></script>
+<script src="/theme/vendor/circle-progress/circle-progress.min.js"
+        type="0e3de45365ae9236cbb75824-text/javascript"></script>
+<script src="/theme/vendor/perfect-scrollbar/perfect-scrollbar.js"
+        type="0e3de45365ae9236cbb75824-text/javascript"></script>
+{#<script src="/theme/vendor/chartjs/Chart.bundle.min.js" type="0e3de45365ae9236cbb75824-text/javascript"></script>#}
 <script src="/theme/vendor/select2/select2.min.js" type="0e3de45365ae9236cbb75824-text/javascript">
 </script>
 
 <script src="/theme/js/main.js" type="0e3de45365ae9236cbb75824-text/javascript"></script>
 <script src="/theme/js/rocket-loader.min.js" data-cf-settings="0e3de45365ae9236cbb75824-|49" defer=""></script>
+
+
 </body>
 {% block javascripts %}{% endblock %}
 </body>
