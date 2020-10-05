@@ -93,7 +93,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-md-9 btn-group">
+        <div class="col-md-7 btn-group">
             {% if not folder.parent %}
                 <a href="{{ path('project_show',{'id': folder.project.id}) }}"
                    style="padding-right: 25px;padding-top: 7px; ">
@@ -108,7 +108,7 @@
             <h1>Folder : {{ folder.name }}</h1>
         </div>
         {% if is_granted('ROLE_DESIGNER') %}
-            <div class="col-md-3 text-right">
+            <div class="col-md-5 text-right">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFolderModal">
                     <i class="fa fa-plus"></i> Dossier
                 </button>
@@ -192,7 +192,10 @@
             <a class="example-image-link tile form"
                href="{{ asset('/folders/images/'~ img.imageName) }}"
                data-lightbox="example-set"
-               data-title='<a href="{{ path('update_image', {'id': img.id}) }}">Ajouter un commentaire</a>'>
+               data-title='<a href="{{ path('show_image', {'id': img.id}) }}">Consulter</a>
+                            {% if is_granted('ROLE_DESIGNER') %} -
+                                 <a href="{{ path('delete_image', {'id' : img.id}) }}" >Supprimer</a>
+                            {% endif %}"' >
                 <img class="example-image" src="{{ asset('/folders/images/'~ img.imageName) }}" alt=""/>
             </a>
         {% endfor %}

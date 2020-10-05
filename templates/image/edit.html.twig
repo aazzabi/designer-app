@@ -97,7 +97,6 @@
             $('.marker').children('img').attr("src", "./imgNotes/lib/images/marker_black.png'");
             var notes = {{ comments | raw }}
             var comments = {{ comments | raw }};
-            console.log(comments);
             $(window).load(function () {
 
                 var $img = $("#image").imgNotes({
@@ -124,6 +123,7 @@
                                             "y": $elem.data("note").y,
                                         },
                                         error: function (response) {
+                                            $elem.data("note")[id] = 1111;
                                             console.log("err", response);
                                         },
                                         success: function (response) {
@@ -134,12 +134,13 @@
                                     $(this).dialog("close");
                                 },
                                 "Delete": function () {
-                                    console.log($elem.data("note"));
+                                    console.log($elem.data("note") , 'id');
                                     $.ajax({
                                         type: "post",
                                         url: '{{ path('delete_comment_ajax') }}',
                                         data: {
-                                            "id": $elem.data('note').id,
+                                            "x": $elem.data("note").x,
+                                            "y": $elem.data("note").y,
                                         },
                                     });
                                     $elem.trigger("remove");
@@ -170,7 +171,6 @@
                 $toggle.on("click", function () {
                     var $this = $(this);
                     if ($this.text() == "Edit") {
-                        console.log(comments);
                         $this.text("View");
                         $img.imgNotes("option", "canEdit", true);
                     } else {

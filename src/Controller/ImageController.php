@@ -24,9 +24,28 @@ use Symfony\Component\Serializer\Serializer;
 class ImageController extends AbstractController
 {
     /**
-     * @Route("/edit/{id}", name="update_image", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="show_image", methods={"GET", "POST"})
      */
     public function show(Request $request, Image $image, CommentRepository $commentRepository): Response
+    {
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers, $encoders);
+
+        $comments = $commentRepository->findBy(['image'=> $image]);
+
+        $jsonContent = $serializer->serialize($comments, 'json', ['groups' => 'show_comment']);
+        return $this->render('image/edit.html.twig', [
+            'comts' => $comments,
+            'comments' => $jsonContent,
+            'image' => $image,
+        ]);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete_image", methods={"GET", "POST"})
+     */
+    public function delete(Request $request, Image $image, CommentRepository $commentRepository): Response
     {
         $encoders = [new XmlEncoder(), new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
@@ -74,11 +93,15 @@ class ImageController extends AbstractController
      */
     public function deleteCommentAjax(Request $request, CommentRepository $commentRepository)
     {
-        $id = $request->get('id');
-        $c = $commentRepository->find($id);
+        $x = $request->get('x');
+        $y = $request->get('y');
+        $c = $commentRepository->findOneBy(['x'=> $x, 'y'=> $y]);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($c);
         $entityManager->flush();
+        $response = new Response($c, 200);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 
 

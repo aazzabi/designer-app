@@ -127,7 +127,7 @@
                                 <img src="{{ asset('/theme/images/icon/avatar-01.jpg') }}" alt="John Doe" />
                             </div>
                             <div class="content">
-                                <a class="js-acc-btn" href="#">john doe</a>
+                                <a class="js-acc-btn" href="#">{{ app.user.username }}</a>
                             </div>
                             <div class="account-dropdown js-dropdown">
                                 <div class="info clearfix">
@@ -138,9 +138,12 @@
                                     </div>
                                     <div class="content">
                                         <h5 class="name">
-                                            <a href="#">john doe</a>
+                                            <a href="#">{{ app.user.firstName }} {{ app.user.lastName }}</a>
                                         </h5>
-                                        <span class="email"><a href="https://colorlib.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="066c696e6862696346637e676b766a632865696b">[email&#160;protected]</a></span>
+                                        <span class="email">
+                                            <a href="https://colorlib.com/cdn-cgi/l/email-protection"
+                                               class="__cf_email__">
+                                                {{ app.user.email }}</a></span>
                                     </div>
                                 </div>
                                 <div class="account-dropdown__body">

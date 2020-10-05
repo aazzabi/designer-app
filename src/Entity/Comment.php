@@ -147,4 +147,11 @@ class Comment
         $serializer = new Serializer(array($normalizer), array($encoder));
         return $serializer->serialize($this, 'json');
     }
+
+    public function __toString()
+    {
+        return $this->getId() . '-' .$this->getNote() . ' ('. $this->getX() .','. $this->getY(). ')' ;
+    }
+
+
 }
