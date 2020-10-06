@@ -1,24 +1,83 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {#<link rel="stylesheet" href="/stylesheets/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">#}
+    <style>
+        body {
+            font-family: "Josefin Sans" !important;
+        }
+    </style>
+    <link href="/filedash/fonts/css2.css" rel="stylesheet">
+    <!-- App css -->
+    <link rel="stylesheet" href="/filedash/assets/css/app.min.css" type="text/css">
+    <link rel="stylesheet" href="/filedash/vendors/bundle.css" type="text/css">
 
-{% block title %}Register{% endblock %}
+    <link href="/theme/css/font-face.css" rel="stylesheet" media="all">
+    <link href="/theme/css/theme.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
 
-{% block body %}
 
-    <div class="row">
-        <div class="col-6 offset-3">
+    <link rel="stylesheet" href="/filedash/vendors/bundle.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="/filedash/vendors/quill/quill.snow.css" rel="stylesheet" type="text/css">
+    <link href="/filedash/vendors/jstree/themes/default/style.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/filedash/vendors/clockpicker/bootstrap-clockpicker.min.css" type="text/css">
+    <link rel="stylesheet" href="/filedash/vendors/datepicker/daterangepicker.css" type="text/css">
+    <link rel="stylesheet" href="/filedash/vendors/dataTable/datatables.min.css" type="text/css">
+    <link rel="stylesheet" href="/filedash/vendors/select2/css/select2.min.css" type="text/css">
+    {% block stylesheets %}{% endblock %}
+</head>
 
-            <div class="card bg-light">
-                <div class="card-body">
-                    <h1 class="text-center">Register</h1>
+<body class="animsition" style="animation-duration: 900ms; opacity: 1;">
+<div class="page-wrapper">
+    <div class="page-content--bge5">
+        <div class="container">
+            <div class="login-wrap">
+                <div class="login-content">
+                    <div class="login-form">
 
-                    {{ form_start(registrationForm) }}
-                    {{ form_row(registrationForm.email) }}
-                    {{ form_row(registrationForm.plainPassword) }}
+                        <form method="post">
 
-                    <button class="btn btn-primary btn-block">Register</button>
-                    {{ form_end(registrationForm) }}
+                                <h1 class="text-center">Bienvenu chez nous !</h1>
+
+                                {{ form_start(registrationForm) }}
+                                {{ form_row(registrationForm.firstName) }}
+                                {{ form_row(registrationForm.lastName) }}
+                                {{ form_row(registrationForm.username) }}
+                                {{ form_row(registrationForm.email) }}
+                                {{ form_row(registrationForm.roles) }}
+                                {{ form_row(registrationForm.plainPassword) }}
+
+                                <button class="btn btn-primary btn-block">Confirmer</button>
+                                {{ form_end(registrationForm) }}
+
+                            {#
+                                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                                See https://symfony.com/doc/current/security/remember_me.html
+
+                                <div class="checkbox mb-3">
+                                    <label>
+                                        <input type="checkbox" name="_remember_me"> Remember me
+                                    </label>
+                                </div>
+                            #}
+
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
+</div>

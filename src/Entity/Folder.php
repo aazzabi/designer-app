@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\Repository\FolderRepository;
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 
 /**
  * @ORM\Entity(repositoryClass=FolderRepository::class)
@@ -15,8 +16,8 @@ class Folder
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @Encrypted
+     * @ORM\Column(type="string")
      */
     private $id;
 
@@ -36,17 +37,6 @@ class Folder
      */
     private $createdAt;
 
-//
-//    /**
-//     * @ORM\OneToMany(targetEntity="Image", mappedBy="folder", orphanRemoval=true, )
-//     */
-//    private $images;
-
-//    /**
-//     * @ORM\OneToMany(targetEntity="Folder", mappedBy="parent")
-//     */
-//    private $children;
-
     /**
      * @ORM\ManyToOne(targetEntity="Folder", inversedBy="children", cascade={"remove"})
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id",  onDelete="CASCADE")
@@ -61,6 +51,7 @@ class Folder
 
     public function __construct()
     {
+        $this->setID(uniqid());
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->images = new ArrayCollection();
         $this->createdAt = new \DateTime();

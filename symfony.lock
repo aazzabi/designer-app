@@ -1,4 +1,7 @@
 {
+    "ambta/doctrine-encrypt-bundle": {
+        "version": "2.5.6"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99"
     },

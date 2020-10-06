@@ -17,8 +17,7 @@ class User implements UserInterface
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     private $id;
 
@@ -64,15 +63,22 @@ class User implements UserInterface
      */
     private $lastLogin;
 
-
     public function __construct()
     {
-
+        $this->setID(uniqid());
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
     public function getEmail(): ?string
@@ -98,6 +104,14 @@ class User implements UserInterface
     }
 
     /**
+     * @param mixed $username
+     */
+    public function setUsername($username): void
+    {
+        $this->username = $username;
+    }
+
+    /**
      * @see UserInterface
      */
     public function getRoles(): array
@@ -112,6 +126,20 @@ class User implements UserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function addRole($role)
+    {
+        $role = strtoupper($role);
+        if ($role === 'ROLE_USER') {
+            return $this;
+        }
+
+        if (!in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
 
         return $this;
     }

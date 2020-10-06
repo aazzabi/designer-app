@@ -16,8 +16,7 @@ class Comment
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     private $id;
 
@@ -54,6 +53,7 @@ class Comment
      */
     public function __construct($x, $y, $note, $image)
     {
+        $this->setID(uniqid());
         $this->x = $x;
         $this->y = $y;
         $this->note = $note;

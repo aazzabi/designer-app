@@ -4,8 +4,56 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "365c05c39d2324a9c74b120488a89850",
+    "content-hash": "9e6b95b182ff6078907113c14ead1233",
     "packages": [
+        {
+            "name": "ambta/doctrine-encrypt-bundle",
+            "version": "2.5.6",
+            "target-dir": "Ambta/DoctrineEncryptBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ambta/DoctrineEncryptBundle.git",
+                "reference": "6343c005e66cb10f7e78fd51595eef8d1600c426"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ambta/DoctrineEncryptBundle/zipball/6343c005e66cb10f7e78fd51595eef8d1600c426",
+                "reference": "6343c005e66cb10f7e78fd51595eef8d1600c426",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": ">=2.5",
+                "ext-openssl": "*",
+                "php": ">=5.6",
+                "symfony/framework-bundle": ">=2.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Ambta\\DoctrineEncryptBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcel van Nuil",
+                    "email": "marcel@ambta.com"
+                }
+            ],
+            "description": "Symfony 2 bundle which allows to encrypt data in database with some encrypt algorithm",
+            "keywords": [
+                "Rijndael",
+                "aes256",
+                "decrypt",
+                "doctrine",
+                "encrypt",
+                "symfony"
+            ],
+            "time": "2020-05-08T14:09:49+00:00"
+        },
         {
             "name": "composer/package-versions-deprecated",
             "version": "1.11.99",

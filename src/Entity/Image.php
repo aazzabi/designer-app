@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ImageRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 
 /**
  * @ORM\Entity(repositoryClass=ImageRepository::class)
@@ -14,7 +15,7 @@ class Image
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     private $id;
 
@@ -40,6 +41,16 @@ class Image
      * @var \DateTime
      */
     private $updatedAt;
+
+    /**
+     * Image constructor.
+     * @param $id
+     */
+    public function __construct()
+    {
+        $this->setID(uniqid());
+    }
+
 
     public function getId(): ?int
     {

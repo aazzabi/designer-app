@@ -6,6 +6,7 @@ use App\Form\FolderType;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 
 /**
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
@@ -14,8 +15,7 @@ class Project
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     private $id;
 
@@ -49,6 +49,7 @@ class Project
 
     public function __construct()
     {
+        $this->setID(uniqid());
         $this->createdAt = new \DateTime('now');
     }
 
