@@ -65,7 +65,7 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->setID(uniqid());
+        $this->setId(uniqid());
     }
 
     public function getId(): ?string

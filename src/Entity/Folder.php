@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\Repository\FolderRepository;
-use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 
 /**
  * @ORM\Entity(repositoryClass=FolderRepository::class)
@@ -16,7 +15,6 @@ class Folder
 {
     /**
      * @ORM\Id
-     * @Encrypted
      * @ORM\Column(type="string")
      */
     private $id;
@@ -38,30 +36,37 @@ class Folder
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Folder", inversedBy="children", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="Folder")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id",  onDelete="CASCADE")
      */
     private $parent;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Project", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id",  onDelete="CASCADE")
      */
     private $project;
 
     public function __construct()
     {
-        $this->setID(uniqid());
-        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->images = new ArrayCollection();
+        $this->setId(uniqid());
         $this->createdAt = new \DateTime();
     }
 
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+
 
     public function getName(): ?string
     {

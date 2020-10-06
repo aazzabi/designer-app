@@ -49,14 +49,22 @@ class Project
 
     public function __construct()
     {
-        $this->setID(uniqid());
+        $this->setId(uniqid());
         $this->createdAt = new \DateTime('now');
     }
 
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
     public function getName(): ?string

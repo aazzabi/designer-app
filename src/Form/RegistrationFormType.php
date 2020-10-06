@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
@@ -21,16 +22,13 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('lastName')
-            ->add('firstName')
-            ->add('username')
-            ->add('roles', ChoiceType::class, [
-                'multiple' => false,
-                'choices' => [
-                    'ROLE_CLIENT' => 'Client',
-                    'ROLE_DESIGNER' => 'Designeur',
-                ]
+            ->add('lastName', TextType::class , [
+                'label' => 'Prénom'
             ])
+            ->add('firstName', TextType::class , [
+                'label' => 'Nom'
+            ])
+            ->add('username')
             ->add('email', EmailType::class, [
                 'constraints' => [
                     new Email(['message' => 'Please enter a valid email address.'])
@@ -60,8 +58,8 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-                'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => 'Confirm Password'],
+                'first_options' => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Confirmation de mot de passe'],
                 'invalid_message' => 'Your password does not match the confirmation.'
             ]);
     }

@@ -32,7 +32,7 @@ class ImageController extends AbstractController
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoders);
 
-        $comments = $commentRepository->findBy(['image'=> $image]);
+        $comments = $commentRepository->findBy(['image' => $image]);
 
         $jsonContent = $serializer->serialize($comments, 'json', ['groups' => 'show_comment']);
         return $this->render('image/edit.html.twig', [
@@ -47,31 +47,25 @@ class ImageController extends AbstractController
      */
     public function delete(Request $request, Image $image, CommentRepository $commentRepository): Response
     {
-        $encoders = [new XmlEncoder(), new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-        $serializer = new Serializer($normalizers, $encoders);
+        $entityManager = $this->getDoctrine()->getManager();
+        $id = $image->getFolder()->getId();
+        $entityManager->remove($image);
+        $entityManager->flush();
 
-        $comments = $commentRepository->findBy(['image'=> $image]);
-
-        $jsonContent = $serializer->serialize($comments, 'json', ['groups' => 'show_comment']);
-        return $this->render('image/edit.html.twig', [
-            'comts' => $comments,
-            'comments' => $jsonContent,
-            'image' => $image,
-        ]);
+        return $this->redirectToRoute('folder_show', ['id' => $id]);
     }
 
     /**
      *
      * @Route("/addComment/{id}", name="add_comment_ajax" , methods= {"GET", "POST"})
      */
-    public function addCommentAjax(Request $request, Image $image , CommentRepository $commentRepository)
+    public function addCommentAjax(Request $request, Image $image, CommentRepository $commentRepository)
     {
         $note = $request->get('note');
         $x = $request->get('x');
         $y = $request->get('y');
 
-        $c = $commentRepository->findOneBy(['x'=> $x, 'y'=> $y]);
+        $c = $commentRepository->findOneBy(['x' => $x, 'y' => $y]);
         $entityManager = $this->getDoctrine()->getManager();
         if ($c) {
             $c->setNote($note);
@@ -87,6 +81,7 @@ class ImageController extends AbstractController
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+
     /**
      *
      * @Route("/deleteComment", name="delete_comment_ajax" , methods= {"GET", "POST"})
@@ -95,7 +90,7 @@ class ImageController extends AbstractController
     {
         $x = $request->get('x');
         $y = $request->get('y');
-        $c = $commentRepository->findOneBy(['x'=> $x, 'y'=> $y]);
+        $c = $commentRepository->findOneBy(['x' => $x, 'y' => $y]);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($c);
         $entityManager->flush();

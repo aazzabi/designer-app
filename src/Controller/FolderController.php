@@ -24,62 +24,47 @@ use Symfony\Bridge\Twig\Mime\NotificationEmail;
  */
 class FolderController extends AbstractController
 {
-    /**
-     * @Route("/", name="folder_index")
-     */
-    public function index()
-    {
-        return $this->render('folder/index.html.twig', [
-            'controller_name' => 'FolderController',
-        ]);
-    }
+
 
     /**
-     * @Route("/new", name="new")
+     * @Route("/alertClient/{id}", name="alert_client", methods={"GET", "POST"} )
+     *
      */
-    public function new(Request $request): Response
+    public function alertClient( Request $request, $id,
+                                 ProjectRepository $projectRepository, FolderRepository $folderRepository,
+                                 MailerInterface $mailer)
     {
-        $folder = new Folder();
-        $form = $this->createForm(FolderType::class, $folder);
-        $form->handleRequest($request);
-        $entityManager = $this->getDoctrine()->getManager();
+        $folder = $folderRepository->find($id);
+        $project = $folder->getProject();
+        $client = $project->getClient();
+        $email = (new Email())
+            ->from(new Address( $_ENV['EMAIL_BOT'] , 'CheckMyDesign Mail BOT'))
+            ->to($client->getEmail())
+            ->subject('Nouveau images disponbiles')
+            ->html("Cher ". $client->getLastName() .'<br> Vous avez des nouveaux images téléchargés sur votre espace client <br> 
+                    Veuillez les consulter et nous donner vos retours . <br>
+                    Cordialement '. $this->getUser()->getFirstName() );
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $images = $form->get('images')->getData();
+        $mailer->send($email);
 
-            foreach ($images as $key => $img) {
-                $fichier = md5(uniqid()) . '.' . $img->guessExtension();
-                $img->move(
-                    $this->getParameter('images_directory'),
-                    $fichier
-                );
-                $i = new Image();
-                $i->setImageName($fichier);
-                $i->setUpdatedAt(new \DateTime('now'));
-                $i->setFolder($folder);
-                $entityManager->persist($i);
-            }
-
-            $entityManager->persist($folder);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('folder_index');
-        }
-
-        return $this->render('folder/new.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        $json = json_encode($email);
+        $response = new Response($json, 200);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
+
 
     /**
      * @Route("/{id}", name="folder_show", methods={"GET", "POST"})
      */
-    public function show(Request $request, Folder $folder , FolderRepository $folderRepository, ImageRepository $imageRepository): Response
+    public function show(Request $request, FolderRepository $folderRepository, $id, ImageRepository $imageRepository): Response
     {
         $childFld = new Folder();
         $form = $this->createForm(FolderType::class, $childFld);
         $form->handleRequest($request);
         $entityManager = $this->getDoctrine()->getManager();
+
+        $folder = $folderRepository->find($id);
 
         $arrayImgs = new Image();
         $formImage = $this->createForm(ImageType::class, $arrayImgs);
@@ -127,31 +112,5 @@ class FolderController extends AbstractController
     }
 
 
-    /**
-     * @Route("/alertClient/{id}", name="alert_client", methods={"GET", "POST"} )
-     *
-     */
-    public function alertClient( Request $request, $id,
-                                 ProjectRepository $projectRepository, FolderRepository $folderRepository,
-                                 MailerInterface $mailer)
-    {
-        $folder = $folderRepository->find($id);
-        $project = $folder->getProject();
-        $client = $project->getClient();
-        $email = (new Email())
-            ->from(new Address( $_ENV['EMAIL_BOT'] , 'CheckMyDesign Mail BOT'))
-            ->to($client->getEmail())
-            ->subject('Nouveau images disponbiles')
-            ->html("Cher ". $client->getLastName() .'<br> Vous avez des nouveaux images téléchargés sur votre espace client <br> 
-                    Veuillez les consulter et nous donner vos retours . <br>
-                    Cordialement '. $this->getUser()->getFirstName() );
-
-        $mailer->send($email);
-
-        $json = json_encode($email);
-        $response = new Response($json, 200);
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
-    }
 
 }

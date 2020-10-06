@@ -14,13 +14,12 @@ class Image
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
      * @ORM\Column(type="string")
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Folder", inversedBy="images", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Folder", inversedBy="images")
      * @ORM\JoinColumn(name="folder_id", referencedColumnName="id",  onDelete="CASCADE")
      */
     private $folder;
@@ -48,13 +47,21 @@ class Image
      */
     public function __construct()
     {
-        $this->setID(uniqid());
+        $this->setId(uniqid());
     }
 
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
     public function getFolder(): ?Folder

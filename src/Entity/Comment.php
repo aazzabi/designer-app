@@ -53,7 +53,7 @@ class Comment
      */
     public function __construct($x, $y, $note, $image)
     {
-        $this->setID(uniqid());
+        $this->setId(uniqid());
         $this->x = $x;
         $this->y = $y;
         $this->note = $note;
@@ -61,10 +61,19 @@ class Comment
     }
 
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
 
     /**
      * @return mixed
