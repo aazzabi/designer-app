@@ -19,14 +19,6 @@ class FolderType extends AbstractType
         $builder
             ->add('name')
             ->add('description', TextareaType::class)
-//            ->add('images', FileType::class, [
-//                'multiple' => true,
-//                'attr' => [
-//                    'class' => 'imagesInput',
-//                ],
-//                'mapped' => false,
-//                'required' => false
-//            ])
         ;
     }
 

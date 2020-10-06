@@ -137,26 +137,6 @@ class Comment
         $this->image = $image;
     }
 
-    public function serializer()
-    {
-        $encoder    = new JsonEncoder();
-        $normalizer = new ObjectNormalizer();
-
-        $normalizer->setIgnoredAttributes(array(
-            'whatever', 'attributes', 'you', 'want', 'to', 'ignore'
-        ));
-
-        // The setCircularReferenceLimit() method of this normalizer sets the number
-        // of times it will serialize the same object
-        // before considering it a circular reference. Its default value is 1.
-        $normalizer->setCircularReferenceHandler(function ($object) {
-            return $object->getImageName();
-        });
-
-        $serializer = new Serializer(array($normalizer), array($encoder));
-        return $serializer->serialize($this, 'json');
-    }
-
     public function __toString()
     {
         return $this->getId() . '-' .$this->getNote() . ' ('. $this->getX() .','. $this->getY(). ')' ;

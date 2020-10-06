@@ -91,65 +91,6 @@ class Folder
 
         return $this;
     }
-//
-//    /**
-//     * @return mixed
-//     */
-//    public function getImages()
-//    {
-//        return $this->images;
-//    }
-//
-//    /**
-//     * @param mixed $images
-//     */
-//    public function setImages($images): void
-//    {
-//        $this->images = $images;
-//    }
-//
-//    public function addImage(Image $img)
-//    {
-//        if (!$this->images->contains($img)) {
-//            $this->images->add($img);
-//            $img->setFolder($this);
-//        }
-//        return $this;
-//    }
-//
-//    public function removeImage($img)
-//    {
-//        $this->images->removeElement($img);
-//    }
-//
-//    /**
-//     * @return mixed
-//     */
-//    public function getChildren()
-//    {
-//        return $this->children;
-//    }
-//
-//    /**
-//     * @param mixed $children
-//     */
-//    public function setChildren($children): void
-//    {
-//        $this->children = $children;
-//    }
-//
-//    public function addChildren($fld)
-//    {
-//        $this->children->add($fld);
-//        $fld->setParent($this);
-//        return $this;
-//
-//    }
-//
-//    public function removeChildren($img)
-//    {
-//        $this->children->removeElement($img);
-//    }
 
     /**
      * @return mixed
@@ -203,6 +144,5 @@ class Folder
     {
         return $this->getName();
     }
-
 
 }

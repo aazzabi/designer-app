@@ -49,12 +49,10 @@
         <div id="table-files_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
                 <div class="col-sm-12">
-                    <table id="table-files" class="table table-striped table-hover dataTable no-footer" role="grid"
+                    <table border="1" id="table-files" class="table table-striped table-hover dataTable no-footer" role="grid"
                            aria-describedby="table-files_info">
                         <thead>
                         <tr role="row">
-                            <th class="" style="width: 15px;">Type
-                            </th>
                             <th class="" style="width: 250px;">Name
                             </th>
                             <th class="" style="width: 100px;">Date de création
@@ -71,14 +69,7 @@
                         {% for project in projects %}
 
                             <tr role="row" class="odd">
-                                <td class="">
-                                    <figure class="avatar avatar-sm mr-3">
-                                            <span class="avatar-title rounded-pill">
-                                                <i class="ti-image"></i>
-                                                {#<i class="ti-folder"></i>#}
-                                           </span>
-                                    </figure>
-                                </td>
+
                                 <td>
                                     <a href="{{ path('project_show', {'id': project.id}) }}"
                                        class="d-flex align-items-center">

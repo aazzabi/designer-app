@@ -4,67 +4,68 @@
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
     {#<link rel="stylesheet" href="/stylesheets/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">#}
-    <style>
-        body {
-            font-family: "Josefin Sans" !important;
-        }
-
-        .modal-backdrop.show {
-            opacity: 0;
-            visibility: hidden;
-        }
-    </style>
-    <link href="/filedash/fonts/css2.css" rel="stylesheet">
-    <!-- App css -->
-    <link rel="stylesheet" href="/filedash/assets/css/app.min.css" type="text/css">
-    <link rel="stylesheet" href="/filedash/vendors/bundle.css" type="text/css">
-
-    <link href="/theme/css/font-face.css" rel="stylesheet" media="all">
-    <link href="/theme/css/theme.css" rel="stylesheet" media="all">
-    <link href="/theme/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
-    <link href="/theme/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="/theme/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
     <link href="/theme/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
-    <link href="/theme/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="/theme/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
-    <link href="/theme/vendor/wow/animate.css" rel="stylesheet" media="all">
-    <link href="/theme/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
-    <link href="/theme/vendor/slick/slick.css" rel="stylesheet" media="all">
-    <link href="/theme/vendor/select2/select2.min.css" rel="stylesheet" media="all">
-    <link href="/theme/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+    <link href="/theme/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <!--
+           <style>
+               body {
+                   font-family: "Josefin Sans" !important;
+               }
+
+               .modal-backdrop.show {
+                   opacity: 0;
+                   visibility: hidden;
+               }
+           </style>
+           <link href="/filedash/fonts/css2.css" rel="stylesheet">
+           <link rel="stylesheet" href="/filedash/assets/css/app.min.css" type="text/css">
+           <link rel="stylesheet" href="/filedash/vendors/bundle.css" type="text/css">
+
+           <link href="/theme/css/font-face.css" rel="stylesheet" media="all">
+           <link href="/theme/css/theme.css" rel="stylesheet" media="all">
+           <link href="/theme/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+           <link href="/theme/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+           <link href="/theme/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+           <link href="/theme/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+           <link href="/theme/vendor/wow/animate.css" rel="stylesheet" media="all">
+           <link href="/theme/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+           <link href="/theme/vendor/slick/slick.css" rel="stylesheet" media="all">
+           <link href="/theme/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+           <link href="/theme/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
 
 
-    <link rel="stylesheet" href="/filedash/vendors/bundle.css" type="text/css">
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <link href="/filedash/vendors/quill/quill.snow.css" rel="stylesheet" type="text/css">
-    <link href="/filedash/vendors/jstree/themes/default/style.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="/filedash/vendors/clockpicker/bootstrap-clockpicker.min.css" type="text/css">
-    <link rel="stylesheet" href="/filedash/vendors/datepicker/daterangepicker.css" type="text/css">
-    <link rel="stylesheet" href="/filedash/vendors/dataTable/datatables.min.css" type="text/css">
-    <link rel="stylesheet" href="/filedash/vendors/select2/css/select2.min.css" type="text/css">
+           <link rel="stylesheet" href="/filedash/vendors/bundle.css" type="text/css">
+           <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
+           <link href="/filedash/vendors/quill/quill.snow.css" rel="stylesheet" type="text/css">
+           <link href="/filedash/vendors/jstree/themes/default/style.min.css" rel="stylesheet" type="text/css">
+           <link rel="stylesheet" href="/filedash/vendors/clockpicker/bootstrap-clockpicker.min.css" type="text/css">
+           <link rel="stylesheet" href="/filedash/vendors/datepicker/daterangepicker.css" type="text/css">
+           <link rel="stylesheet" href="/filedash/vendors/dataTable/datatables.min.css" type="text/css">
+           <link rel="stylesheet" href="/filedash/vendors/select2/css/select2.min.css" type="text/css">
+
+            -->
     {% block stylesheets %}{% endblock %}
 </head>
 
 <body>
-{% include 'sidebar.html.twig' %}
-<div class="page-container">
-    {% include 'header.html.twig' %}
 
-    <div class="main-content">
-        <div class="container-fluid">
-            {% block body %}{% endblock %}
-        </div>
+<div class="main-content">
+    <div class="container-fluid">
+        {% block body %}{% endblock %}
     </div>
+</div>
 
 </div>
 
+<script src="/theme/vendor/bootstrap-4.1/bootstrap.min.js" type="0e3de45365ae9236cbb75824-text/javascript"></script>
+<!--
 
-<script src="{{ asset('/javascripts/jquery-3.3.1.js') }}"></script>
-<script src="{{ asset('/javascripts/jquery.min.js') }}"></script>
-<script src="{{ asset('/javascripts/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('/javascripts/datatables.js') }}"></script>
-<script src="{{ asset('/javascripts/datatables.bootstrap.min.js') }}"></script>
 
+{#<script src="{{ asset('/javascripts/jquery-3.3.1.js') }}"></script>#}
+{#<script src="{{ asset('/javascripts/jquery.min.js') }}"></script>#}
+{#<script src="{{ asset('/javascripts/jquery.dataTables.min.js') }}"></script>#}
+{#<script src="{{ asset('/javascripts/datatables.js') }}"></script>#}
+{#<script src="{{ asset('/javascripts/datatables.bootstrap.min.js') }}"></script>#}
 <script src="/filedash/vendors/bundle.js"></script>
 {#<script src="/filedash/assets/js/raphael-min.js"></script>#}
 {#<script src="/filedash/assets/js/justgage.min.js"></script>#}
@@ -78,7 +79,6 @@
 <script src="/theme/vendor/jquery-3.2.1.min.js" type="0e3de45365ae9236cbb75824-text/javascript"></script>
 
 <script src="/theme/vendor/bootstrap-4.1/popper.min.js" type="0e3de45365ae9236cbb75824-text/javascript"></script>
-<script src="/theme/vendor/bootstrap-4.1/bootstrap.min.js" type="0e3de45365ae9236cbb75824-text/javascript"></script>
 
 <script src="/theme/vendor/slick/slick.min.js" type="0e3de45365ae9236cbb75824-text/javascript">
 </script>
@@ -101,8 +101,8 @@
 <script src="/theme/js/main.js" type="0e3de45365ae9236cbb75824-text/javascript"></script>
 <script src="/theme/js/rocket-loader.min.js" data-cf-settings="0e3de45365ae9236cbb75824-|49" defer=""></script>
 
+-->
 
 </body>
 {% block javascripts %}{% endblock %}
-</body>
 </html>
