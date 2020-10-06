@@ -9,15 +9,10 @@ use App\Form\ImageType;
 use App\Repository\FolderRepository;
 use App\Repository\ImageRepository;
 use App\Repository\ProjectRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bridge\Twig\Mime\NotificationEmail;
 
 /**
  * @Route("/folder")
@@ -25,29 +20,28 @@ use Symfony\Bridge\Twig\Mime\NotificationEmail;
 class FolderController extends AbstractController
 {
 
-
     /**
      * @Route("/alertClient/{id}", name="alert_client", methods={"GET", "POST"} )
      *
      */
-    public function alertClient( Request $request, $id,
-                                 ProjectRepository $projectRepository, FolderRepository $folderRepository,
-                                 MailerInterface $mailer)
+    public function alertClient( Request $request, $id, ProjectRepository $projectRepository, FolderRepository $folderRepository, \Swift_Mailer $mailer)
     {
         $folder = $folderRepository->find($id);
         $project = $folder->getProject();
         $client = $project->getClient();
-        $email = (new Email())
-            ->from(new Address( $_ENV['EMAIL_BOT'] , 'CheckMyDesign Mail BOT'))
-            ->to($client->getEmail())
-            ->subject('Nouveau images disponbiles')
-            ->html("Cher ". $client->getLastName() .'<br> Vous avez des nouveaux images téléchargés sur votre espace client <br> 
-                    Veuillez les consulter et nous donner vos retours . <br>
-                    Cordialement '. $this->getUser()->getFirstName() );
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom($_ENV['EMAIL_BOT'] , 'CheckMyDesign' )
+            ->setTo($client->getEmail())
+            ->setBody(
+                $this->renderView('emails/alertClient.html.twig', [
+                    'client' => $client
+                ]
+                ), 'text/html'
+            )
+        ;
+        $mailer->send($message);
 
-        $mailer->send($email);
-
-        $json = json_encode($email);
+        $json = json_encode($message);
         $response = new Response($json, 200);
         $response->headers->set('Content-Type', 'application/json');
         return $response;

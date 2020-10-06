@@ -287,7 +287,6 @@
                 type: "post",
                 url: '{{ path('alert_client', {'id': folder.id}) }}',
                 error: function (response) {
-                    console.log("err", response);
                 },
                 success: function (response) {
                     console.log("success", response);
