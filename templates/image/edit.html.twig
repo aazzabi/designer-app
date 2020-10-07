@@ -27,13 +27,12 @@
                  height="60%"/><br/>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4 "  id="allComments">
             {% for c in comts %}
                 <div class="card">
                     <div class="card-body">
                         <h5>
-                            <i class="fa fa-map-marker text-left" style="padding: 0 auto">
-                                #{{ loop.index }}</i>
+                            <i class="fa fa-map-marker text-left" style="padding: 0 auto"></i>
                             {{ c.note }}
                         </h5>
                     </div>
@@ -65,7 +64,6 @@
                     onEdit: function (ev, elem) {
                         var $elem = $(elem);
                         $('#NoteDialog').remove();
-                        console.log('elem : ', elem);
                         return $('<div id="NoteDialog"></div>').dialog({
                             title: "Note Editor",
                             resizable: false,
@@ -85,18 +83,15 @@
                                             "y": $elem.data("note").y,
                                         },
                                         error: function (response) {
-                                            $elem.data("note")[id] = 1111;
-                                            console.log("err", response);
                                         },
                                         success: function (response) {
-                                            console.log("success", response);
+                                            $('#allComments').html(response);
                                         }
                                     });
                                     $elem.data("note").note = txt;
                                     $(this).dialog("close");
                                 },
                                 "Delete": function () {
-                                    console.log($elem.data("note"), 'id');
                                     $.ajax({
                                         type: "post",
                                         url: '{{ path('delete_comment_ajax') }}',
@@ -104,6 +99,11 @@
                                             "x": $elem.data("note").x,
                                             "y": $elem.data("note").y,
                                         },
+                                        error: function (response) {
+                                        },
+                                        success: function (response) {
+                                            $('#allComments').html(response);
+                                        }
                                     });
                                     $elem.trigger("remove");
                                     $(this).dialog("close");

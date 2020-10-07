@@ -1,0 +1,11 @@
+{% for c in comts %}
+    <div class="card">
+        <div class="card-body">
+            <h5>
+                <i class="fa fa-map-marker text-left" style="padding: 0 auto">
+                    #{{ loop.index }}</i>
+                {{ c.note }}
+            </h5>
+        </div>
+    </div>
+{% endfor %}

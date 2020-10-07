@@ -77,6 +77,16 @@ class ImageController extends AbstractController
             $json = json_encode($comment);
         }
         $entityManager->flush();
+
+        $comments = $commentRepository->findBy(['image' => $image]);
+        $template = $this->render(
+            'image/commentaires.html.twig',
+            [
+                'comts' => $comments,
+                'image' => $image,
+            ]
+        )->getContent();
+        $json = json_encode($template);
         $response = new Response($json, 200);
         $response->headers->set('Content-Type', 'application/json');
         return $response;
@@ -94,7 +104,17 @@ class ImageController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($c);
         $entityManager->flush();
-        $response = new Response($c, 200);
+
+        $comments = $commentRepository->findBy(['image' => $c->getImage()]);
+        $template = $this->render(
+            'image/commentaires.html.twig',
+            [
+                'comts' => $comments,
+                'image' => $c->getImage(),
+            ]
+        )->getContent();
+        $json = json_encode($template);
+        $response = new Response($json, 200);
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
