@@ -76,7 +76,7 @@ class ProjectController extends AbstractController
         }
 
         return $this->render('project/show.html.twig', [
-            'folders' => $folderRepository->findBy(['project' => $project]),
+            'folders' => $folderRepository->findBy(['project' => $project, 'parent' => null]),
             'project' => $project,
             'form' => $form->createView(),
         ]);

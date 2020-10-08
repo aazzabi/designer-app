@@ -69,12 +69,9 @@ class ImageController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         if ($c) {
             $c->setNote($note);
-            $json = json_encode($c);
         } else {
             $comment = new Comment($x, $y, $note, $image);
             $entityManager->persist($comment);
-
-            $json = json_encode($comment);
         }
         $entityManager->flush();
 
