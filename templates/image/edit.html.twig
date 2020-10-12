@@ -122,9 +122,11 @@
                                             "y": $elem.data("note").y,
                                         },
                                         error: function (response) {
+                                            location.reload();
                                         },
                                         success: function (response) {
                                             $('#allComments').html(response);
+                                            location.reload();
                                         }
                                     });
                                     $elem.trigger("remove");
