@@ -1,5 +1,0 @@
-ambta_doctrine_encrypt:
-  secret_key:           ED73167B4C275B48 # Your own random 152 bit key (16 characters)
-  encrypted_suffix:     <ENC> # or any other string that you wish that won't cause issues with your DB
-  encryptor:            AES-256 # AES-256 or AES-192
-  encryptor_class:      \Ambta\DoctrineEncryptBundle\Encryptors\AES256Encryptor # your own encryption class
