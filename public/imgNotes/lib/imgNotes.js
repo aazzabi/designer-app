@@ -22,7 +22,7 @@
                 this.options.hAll = "middle";
                 var u = '/imgNotes/lib/images/marker_black.png'
                 var elem = $(document.createElement('div')).addClass("marker")
-                    .append($('<p class="marker-text">' + (this.notes.length + 1) + '</p>'))
+                    .append($('<p class="marker-text">' + (this.notes.length + 1) + '</p>'), {id: this.notes.length + 1})
                     .prepend($('<img>', {src: u, width: '100%', class: 'mrk'})).attr("title", "");
                 $(elem).tooltip({
                     content: function () {

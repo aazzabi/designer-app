@@ -1,7 +1,8 @@
 {#{% extends 'base.html.twig' %}#}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/imgNotes/lib/imgNotes.css">
+    <link rel="stylesheet" href="{{ asset('/imgNotes/lib/imgNotes.css') }}">
+    <link rel="stylesheet" href="{{ asset('/imgNotes/lib/jquery-ui.css') }}">
     <link rel="stylesheet" href="{{ asset('/stylesheets/fontawesome-all.min.css') }}">
 {% endblock %}
 
@@ -27,14 +28,12 @@
                  height="60%"/><br/>
         </div>
 
-        <div class="col-md-4 "  id="allComments">
+        <div class="col-md-4 " id="allComments">
             {% for c in comts %}
-                <div class="card">
-                    <div class="card-body">
-                        <h5>
-                            <i class="fa fa-map-marker text-left" style="padding: 0 auto"></i>
-                            {{ c.note }}
-                        </h5>
+                <div class="card" style="padding: 50px">
+                    <div class="card-body contentComment">
+                        <i class="fa fa-map-marker text-left" style="padding: 0 auto"></i>
+                        <span class="index" id="{{ loop.index }}"> {{ c.note }}</span>
                     </div>
                 </div>
             {% endfor %}
@@ -53,9 +52,32 @@
     <script type="text/javascript" src="/imgNotes/lib/jquery.hammer.js"></script>
     <script type="text/javascript" src="/imgNotes/lib/imgViewer.js"></script>
     <script type="text/javascript" src="/imgNotes/lib/imgNotes.js"></script>
+    <!--suppress JSAnnotator -->
+    <script>
+        (function ($) {
+            $('.contentComment').each(function () {
+                var $this = $(this);
+                $this.mouseover(function () {
+                    $('.marker').each(function (mrk) {
+                        if ($this.find('.index').attr('id').toString() === $(this).find('.marker-text').text().toString()) {
+                            $(this).children('img').attr("src", "/imgNotes/lib/images/marker_red.png");
+                        } else {
+                            $(this).children('img').attr("src", "/imgNotes/lib/images/marker_black.png");
+                        }
+                    })
+                })
+                $this.mouseleave(function () {
+                    $('.marker').each(function (mrk) {
+                        $(this).children('img').attr("src", "/imgNotes/lib/images/marker_black.png");
+                    })
+                })
+            })
+        })(jQuery);
+    </script>
     <script type="text/javascript">
         (function ($) {
-            $('.marker').children('img').attr("src", "./imgNotes/lib/images/marker_black.png'");
+            $('.marker').children('img').attr("src", "./imgNotes/lib/images/marker_black.png");
+
             var notes = {{ comments | raw }}
             var comments = {{ comments | raw }};
             $(window).load(function () {

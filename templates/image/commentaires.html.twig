@@ -1,11 +1,30 @@
 {% for c in comts %}
-    <div class="card">
-        <div class="card-body">
-            <h5>
-                <i class="fa fa-map-marker text-left" style="padding: 0 auto">
-                    #{{ loop.index }}</i>
-                {{ c.note }}
-            </h5>
+    <div class="card" style="padding: 50px">
+        <div class="card-body contentComment">
+            <i class="fa fa-map-marker text-left" style="padding: 0 auto"></i>
+            <span class="index" id="{{ loop.index }}"> {{ c.note }}</span>
         </div>
     </div>
 {% endfor %}
+
+<script>
+    (function ($) {
+        $('.contentComment').each(function () {
+            var $this = $(this);
+            $this.mouseover(function () {
+                $('.marker').each(function (mrk) {
+                    if ($this.find('.index').attr('id').toString() === $(this).find('.marker-text').text().toString()) {
+                        $(this).children('img').attr("src", "/imgNotes/lib/images/marker_red.png");
+                    } else {
+                        $(this).children('img').attr("src", "/imgNotes/lib/images/marker_black.png");
+                    }
+                })
+            })
+            $this.mouseleave(function () {
+                $('.marker').each(function (mrk) {
+                    $(this).children('img').attr("src", "/imgNotes/lib/images/marker_black.png");
+                })
+            })
+        })
+    })(jQuery);
+</script>
